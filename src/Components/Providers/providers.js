@@ -116,7 +116,7 @@ export default function Providers() {
 
     return (
         <>
-            <NavBar />
+            <NavBar activeState="Providers" />
             <Header />
             <div className="h-screen ml-60 bg-gray-100 px-8 py-5">
                 <div className="bg-white pl-4 w-72 p-2 flex space-x-2 rounded">
@@ -294,101 +294,101 @@ export default function Providers() {
                                     </div>
 
                                 </div>
-                    )}
-                </div>
-                ) : (
-                <div>
-                    <div className="flex w-full justify-between">
-                        <h1 className="font-bold text-2xl my-6">Service Providers</h1>
-                        <div className="flex gap-x-5 justify-center items-center">
-                            <div className="flex px-2 py-4 rounded-xl bg-white space-x-2">
-                                <img src="/Search.png" alt="Search" />
-                                <input
-                                    type="text"
-                                    placeholder="Search by name, role.."
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                />
+                            )}
+                        </div>
+                    ) : (
+                        <div>
+                            <div className="flex w-full justify-between">
+                                <h1 className="font-bold text-2xl my-6">Service Providers</h1>
+                                <div className="flex gap-x-5 justify-center items-center">
+                                    <div className="flex px-2 py-4 rounded-xl bg-white space-x-2">
+                                        <img src="/Search.png" alt="Search" />
+                                        <input
+                                            type="text"
+                                            placeholder="Search by name, role.."
+                                            value={search}
+                                            onChange={(e) => setSearch(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full bg-white border border-gray-200">
+                                    <thead>
+                                        <tr className="text-gray-500 font-semibold text-left">
+                                            <th className="py-4 px-6"></th>
+                                            <th className="py-4 pr-6">Name</th>
+                                            <th className="py-4 px-6">Provider Type</th>
+                                            <th className="py-4 px-6">Phone No</th>
+                                            <th className="py-4 px-6">Mobile No</th>
+                                            <th className="py-4 px-6">Addresses</th>
+                                            <th className="py-4 px-6">Available Range</th>
+                                            <th className="py-4 px-6">Taxes</th>
+                                            <th className="py-4 px-6">Available</th>
+                                            <th className="py-4 px-6">Accepted</th>
+                                            <th className="py-4 px-6">Updated At</th>
+                                            <th className="py-4 px-6"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {filteredServiceProviders.map((provider) => (
+                                            <tr key={provider.id} className="border-t hover:bg-gray-100">
+                                                <td className="py-4 px-6 flex items-center">
+                                                    <img
+                                                        src={provider.image}
+                                                        alt={provider.name}
+                                                        className="w-10 h-10 rounded-full mt-2 mr-10"
+                                                    />
+                                                </td>
+                                                <td className="py-4 pr-6">{provider.name}</td>
+                                                <td className="py-4 px-6">{provider.providerType}</td>
+                                                <td className="py-4 px-6">{provider.phNumber}</td>
+                                                <td className="py-4 px-6">{provider.mobileNumber}</td>
+                                                <td className="py-4 px-6">{provider.addresses}</td>
+                                                <td className="py-4 px-6">{provider.availableRange}</td>
+                                                <td className="py-4 px-6">{provider.taxes}</td>
+                                                <td className="py-4 px-6">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={provider.availability}
+                                                        className="toggle-checkbox"
+                                                    />
+                                                </td>
+                                                <td className="py-4 px-6">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={provider.accepted}
+                                                        className="toggle-checkbox"
+                                                    />
+                                                </td>
+                                                <td className="py-4 px-6">{provider.updatedAt}</td>
+                                                <td className="py-4 px-6 text-right">
+                                                    <button className="focus:outline-none">
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            strokeWidth="1.5"
+                                                            stroke="currentColor"
+                                                            className="w-6 h-6 text-gray-700 border-2 rounded-lg hover:bg-gray-300"
+                                                        >
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                d="M12 6.75v.008m0 5.25v.008m0 5.25v.008"
+                                                            />
+                                                        </svg>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    </div>
-                    <div className="overflow-x-auto">
-                        <table className="min-w-full bg-white border border-gray-200">
-                            <thead>
-                                <tr className="text-gray-500 font-semibold text-left">
-                                    <th className="py-4 px-6"></th>
-                                    <th className="py-4 pr-6">Name</th>
-                                    <th className="py-4 px-6">Provider Type</th>
-                                    <th className="py-4 px-6">Phone No</th>
-                                    <th className="py-4 px-6">Mobile No</th>
-                                    <th className="py-4 px-6">Addresses</th>
-                                    <th className="py-4 px-6">Available Range</th>
-                                    <th className="py-4 px-6">Taxes</th>
-                                    <th className="py-4 px-6">Available</th>
-                                    <th className="py-4 px-6">Accepted</th>
-                                    <th className="py-4 px-6">Updated At</th>
-                                    <th className="py-4 px-6"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredServiceProviders.map((provider) => (
-                                    <tr key={provider.id} className="border-t hover:bg-gray-100">
-                                        <td className="py-4 px-6 flex items-center">
-                                            <img
-                                                src={provider.image}
-                                                alt={provider.name}
-                                                className="w-10 h-10 rounded-full mt-2 mr-10"
-                                            />
-                                        </td>
-                                        <td className="py-4 pr-6">{provider.name}</td>
-                                        <td className="py-4 px-6">{provider.providerType}</td>
-                                        <td className="py-4 px-6">{provider.phNumber}</td>
-                                        <td className="py-4 px-6">{provider.mobileNumber}</td>
-                                        <td className="py-4 px-6">{provider.addresses}</td>
-                                        <td className="py-4 px-6">{provider.availableRange}</td>
-                                        <td className="py-4 px-6">{provider.taxes}</td>
-                                        <td className="py-4 px-6">
-                                            <input
-                                                type="checkbox"
-                                                checked={provider.availability}
-                                                className="toggle-checkbox"
-                                            />
-                                        </td>
-                                        <td className="py-4 px-6">
-                                            <input
-                                                type="checkbox"
-                                                checked={provider.accepted}
-                                                className="toggle-checkbox"
-                                            />
-                                        </td>
-                                        <td className="py-4 px-6">{provider.updatedAt}</td>
-                                        <td className="py-4 px-6 text-right">
-                                            <button className="focus:outline-none">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    strokeWidth="1.5"
-                                                    stroke="currentColor"
-                                                    className="w-6 h-6 text-gray-700 border-2 rounded-lg hover:bg-gray-300"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M12 6.75v.008m0 5.25v.008m0 5.25v.008"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
                     )}
-            </div>
-        </div >
+                </div>
+            </div >
         </>
     );
 }

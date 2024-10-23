@@ -9,27 +9,27 @@ export default function ProvidersType() {
             id: 1,
             providerType: "Plumber",
             commission: "75",
-            disabled: true,            
+            disabled: true,
             updatedAt: "2024-10-20",
         },
         {
             id: 2,
             providerType: "Karyana",
             commission: "5",
-            disabled: false,            
+            disabled: false,
             updatedAt: "2024-01-10",
         },
         {
             id: 3,
             providerType: "Bakery",
             commission: "20",
-            disabled: false,            
+            disabled: false,
             updatedAt: "2023-10-20",
         },
     ];
     return (
         <>
-            <NavBar />
+            <NavBar activeState="Providers Types" />
             <Header />
             <div className="ml-60 h-screen bg-gray-100 px-8 py-5">
                 <h1 className="font-bold text-2xl my-6">Providers Type</h1>
@@ -39,7 +39,7 @@ export default function ProvidersType() {
                             <tr className="text-gray-500 font-semibold text-left">
                                 <th className="py-4 px-6">Name</th>
                                 <th className="py-4 px-6">Commission</th>
-                                <th className="py-4 px-6">Disabled</th>                             
+                                <th className="py-4 px-6">Disabled</th>
                                 <th className="py-4 px-6">Updated At</th>
                                 <th className="py-4 px-6"></th>
                             </tr>
@@ -49,7 +49,7 @@ export default function ProvidersType() {
                                 <tr key={type.id} className="border-t hover:bg-gray-100">
                                     <td className="py-4 px-6">{type.providerType}</td>
                                     <td className="py-4 px-6">{type.commission}</td>
-                                   
+
                                     <td className="py-4 px-6">
                                         <input
                                             type="checkbox"

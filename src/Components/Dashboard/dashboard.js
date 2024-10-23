@@ -7,7 +7,7 @@ export default function Dashboard() {
     const [totalServiceProviders, setTotalServiceProviders] = useState(null);
     const [totalCategories, setTotalCategories] = useState(null);
     const [totalBookings, setTotalBookings] = useState(null);
-    const [totalRevenue, setTotalRevenue] = useState(null);
+    const [totalRevenue, setTotalRevenue] = useState(10000);
 
     useEffect(() => {
         setTotalUsers(500);
@@ -47,7 +47,7 @@ export default function Dashboard() {
 
     return (
         <>
-            <NavBar />
+        <NavBar activeState="Dashboard"/>
             <Header />
             <div className="h-screen ml-60 bg-gray-100 px-8 py-5">
                 <h1 className="font-bold text-3xl my-6">Dashboard</h1>

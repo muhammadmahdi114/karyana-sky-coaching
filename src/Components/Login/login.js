@@ -9,7 +9,7 @@ export default function Login() {
     async function submit(e) {
         e.preventDefault();
         if (email === "admin@demo.com" && password === "123456") {
-            navigate("/dashboard")
+            navigate("/home")
         }
         else {
             alert("Invalid Credentials");

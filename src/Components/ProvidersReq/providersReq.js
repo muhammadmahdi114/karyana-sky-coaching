@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import NavBar from "../NavBar/navBar";
 import Header from "../Header/header";
 
 export default function ProvidersReq() {
-    
+
     const [search, setSearch] = useState("");
 
     const serviceProvidersData = [
@@ -43,7 +43,7 @@ export default function ProvidersReq() {
     });
     return (
         <>
-            <NavBar />
+            <NavBar activeState="Providers Requests" />
             <Header />
             <div className="ml-60 h-screen bg-gray-100 px-8 py-5">
                 <div className="flex w-full justify-between">
