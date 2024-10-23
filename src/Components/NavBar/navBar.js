@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function NavBar({ activeState }) {
     const [activeSection, setActiveSection] = useState(null);
     const [showSubMenu, setShowSubMenu] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        if (activeState) {
-            setActiveSection(activeState);
-            if (activeState === "Providers" || activeState === "Providers Requests" || activeState === "Providers Types") {
-                setShowSubMenu(true);
-            }
+        const currentPath = location.pathname;
+        if (currentPath === "/dashboard") {
+            setActiveSection("Dashboard");
+            setShowSubMenu(false);
+        } else if (currentPath === "/providers" || currentPath === "/providers-req" || currentPath === "/providers-type") {
+            setActiveSection(currentPath);
+            setShowSubMenu(true);
         }
-    }, [activeState]);
+    }, [location]);
 
     const menuItems = [
         {
@@ -37,9 +40,7 @@ export default function NavBar({ activeState }) {
     ];
 
     const handleMainItemClick = (itemName) => {
-        setActiveSection(itemName);
         if (itemName === "Dashboard") {
-            setShowSubMenu(false);
             navigate("/dashboard");
         } else if (itemName === "Providers") {
             setShowSubMenu(true);
@@ -47,8 +48,6 @@ export default function NavBar({ activeState }) {
     };
 
     const handleSubItemClick = (subItemNav) => {
-        setActiveSection(subItemNav);
-        setShowSubMenu(true);
         navigate(`/${subItemNav}`);
     };
 
@@ -60,12 +59,12 @@ export default function NavBar({ activeState }) {
                     <button
                         onClick={() => handleMainItemClick(item.name)}
                         className={`flex items-center gap-x-2 px-6 py-2 w-full ${item.name === activeSection || 
-                            (item.name === "Providers" && ["Providers", "Providers Requests", "Providers Types"].includes(activeSection)) ? 
+                            (item.name === "Providers" && ["/providers", "/providers-req", "/providers-type"].includes(activeSection)) ? 
                             'border-l-4 border-primary bg-gray-50' : ''}`}
                     >
                         <img
                             src={item.name === activeSection || 
-                                (item.name === "Providers" && ["Providers", "Providers Requests", "Providers Types"].includes(activeSection)) ? 
+                                (item.name === "Providers" && ["/providers", "/providers-req", "/providers-type"].includes(activeSection)) ? 
                                 item.activeIcon : item.inactiveIcon}
                             alt={item.name}
                         />
@@ -77,7 +76,7 @@ export default function NavBar({ activeState }) {
                                 <button
                                     key={subItem.id}
                                     onClick={() => handleSubItemClick(subItem.nav)}
-                                    className={`flex items-center gap-x-2 px-6 py-2 w-full ${subItem.nav === activeSection ? 'border-l-4 border-primary bg-gray-50' : ''}`}
+                                    className={`flex items-center gap-x-2 px-6 py-2 w-full ${`/${subItem.nav}` === activeSection ? 'border-l-4 border-primary bg-gray-50' : ''}`}
                                 >
                                     <p className="font-bold"> &gt; <span className="font-normal ml-1">{subItem.name}</span></p>
                                 </button>
