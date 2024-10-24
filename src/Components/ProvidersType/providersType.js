@@ -29,7 +29,7 @@ export default function ProvidersType() {
     ];
     return (
         <>
-            <NavBar activeState="Providers Types" />
+            <NavBar/>
             <Header />
             <div className="ml-60 h-screen bg-gray-100 px-8 py-5">
                 <h1 className="font-bold text-2xl my-6">Providers Type</h1>

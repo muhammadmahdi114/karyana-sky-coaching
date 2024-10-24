@@ -47,7 +47,7 @@ export default function Dashboard() {
 
     return (
         <>
-        <NavBar activeState="Dashboard"/>
+        <NavBar />
             <Header />
             <div className="h-screen ml-60 bg-gray-100 px-8 py-5">
                 <h1 className="font-bold text-3xl my-6">Dashboard</h1>

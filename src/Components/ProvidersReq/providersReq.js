@@ -43,7 +43,7 @@ export default function ProvidersReq() {
     });
     return (
         <>
-            <NavBar activeState="Providers Requests" />
+            <NavBar />
             <Header />
             <div className="ml-60 h-screen bg-gray-100 px-8 py-5">
                 <div className="flex w-full justify-between">

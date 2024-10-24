@@ -5,6 +5,8 @@ import Dashboard from './Components/Dashboard/dashboard';
 import Providers from './Components/Providers/providers';
 import ProvidersReq from './Components/ProvidersReq/providersReq';
 import ProvidersType from './Components/ProvidersType/providersType';
+import Categories from './Components/Categories/categories';
+import ServiceList from './Components/ServiceList/serviceList';
 
 function App() {
   useEffect(() => {
@@ -19,6 +21,8 @@ function App() {
         <Route path="/providers" element={<Providers />} />
         <Route path="/providers-req" element={<ProvidersReq />} />
         <Route path="/providers-type" element={<ProvidersType />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/service-list" element={<ServiceList />} />
       </Routes>
     </Router>
   );

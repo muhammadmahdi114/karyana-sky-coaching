@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-export default function NavBar({ activeState }) {
+export default function NavBar() {
     const [activeSection, setActiveSection] = useState(null);
-    const [showSubMenu, setShowSubMenu] = useState(false);
+    const [provShowSubMenu, setProvShowSubMenu] = useState(false);
+    const [servShowSubMenu, setServShowSubMenu] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -11,10 +12,20 @@ export default function NavBar({ activeState }) {
         const currentPath = location.pathname;
         if (currentPath === "/dashboard") {
             setActiveSection("Dashboard");
-            setShowSubMenu(false);
-        } else if (currentPath === "/providers" || currentPath === "/providers-req" || currentPath === "/providers-type") {
+            setProvShowSubMenu(false);
+            setServShowSubMenu(false);
+        } else if (currentPath === "/categories") {
+            setActiveSection("Categories");
+            setProvShowSubMenu(false);
+            setServShowSubMenu(false);
+        } else if (["/providers", "/providers-req", "/providers-type"].includes(currentPath)) {
             setActiveSection(currentPath);
-            setShowSubMenu(true);
+            setProvShowSubMenu(true);
+            setServShowSubMenu(false);
+        } else if (["/services", "/service-list"].includes(currentPath)) {
+            setActiveSection(currentPath);
+            setProvShowSubMenu(false);
+            setServShowSubMenu(true);
         }
     }, [location]);
 
@@ -22,28 +33,52 @@ export default function NavBar({ activeState }) {
         {
             id: 1,
             name: "Dashboard",
-            activeIcon: "/activeDashboard.png",
-            inactiveIcon: "/inactiveDashboard.png",
+            activeIcon: "/activeDashboard.svg",
+            inactiveIcon: "/inactiveDashboard.svg",
         },
         {
             id: 2,
             name: "Providers",
-            activeIcon: "/activeProviders.png",
-            inactiveIcon: "/inactiveProviders.png",
+            activeIcon: "/activeProviders.svg",
+            inactiveIcon: "/inactiveProviders.svg",
+        },
+        {
+            id: 3,
+            name: "Categories",
+            activeIcon: "/activeCategories.svg",
+            inactiveIcon: "/inactiveCategories.svg",
+        },
+        {
+            id: 4,
+            name: "Services",
+            activeIcon: "/activeServices.svg",
+            inactiveIcon: "/inactiveServices.svg",
         },
     ];
 
-    const subMenuItems = [
+    const provSubMenuItems = [
         { id: 1, name: "Providers", nav: "providers" },
         { id: 2, name: "Providers Requests", nav: "providers-req" },
         { id: 3, name: "Providers Types", nav: "providers-type" },
     ];
 
+    const servSubMenuItems = [
+        { id: 1, name: "Service List", nav: "service-list" },
+    ];
+
     const handleMainItemClick = (itemName) => {
         if (itemName === "Dashboard") {
             navigate("/dashboard");
+        } else if (itemName === "Categories") {
+            setActiveSection("Categories");
+            navigate("/categories");
         } else if (itemName === "Providers") {
-            setShowSubMenu(true);
+            setServShowSubMenu(false);
+            setProvShowSubMenu(true);
+        }
+        else if (itemName === "Services") {
+            setServShowSubMenu(true);
+            setProvShowSubMenu(false);
         }
     };
 
@@ -58,21 +93,38 @@ export default function NavBar({ activeState }) {
                 <div key={item.id} className="my-2">
                     <button
                         onClick={() => handleMainItemClick(item.name)}
-                        className={`flex items-center gap-x-2 px-6 py-2 w-full ${item.name === activeSection || 
-                            (item.name === "Providers" && ["/providers", "/providers-req", "/providers-type"].includes(activeSection)) ? 
+                        className={`flex items-center gap-x-2 px-6 py-2 w-full ${item.name === activeSection ||
+                            (item.name === "Providers" && ["/providers", "/providers-req", "/providers-type"].includes(activeSection)) ||
+                            (item.name === "Services" && ["/services", "/service-list"].includes(activeSection)) ?
                             'border-l-4 border-primary bg-gray-50' : ''}`}
                     >
                         <img
-                            src={item.name === activeSection || 
-                                (item.name === "Providers" && ["/providers", "/providers-req", "/providers-type"].includes(activeSection)) ? 
+                            src={item.name === activeSection ||
+                                (item.name === "Providers" && ["/providers", "/providers-req", "/providers-type"].includes(activeSection)) ||
+                                (item.name === "Services" && ["/services", "/service-list"].includes(activeSection)) ?
                                 item.activeIcon : item.inactiveIcon}
                             alt={item.name}
                         />
                         <span>{item.name}</span>
                     </button>
-                    {item.name === "Providers" && showSubMenu && (
+
+                    {item.name === "Providers" && provShowSubMenu && (
                         <div className="py-2 space-y-2 pl-4">
-                            {subMenuItems.map((subItem) => (
+                            {provSubMenuItems.map((subItem) => (
+                                <button
+                                    key={subItem.id}
+                                    onClick={() => handleSubItemClick(subItem.nav)}
+                                    className={`flex items-center gap-x-2 px-6 py-2 w-full ${`/${subItem.nav}` === activeSection ? 'border-l-4 border-primary bg-gray-50' : ''}`}
+                                >
+                                    <p className="font-bold"> &gt; <span className="font-normal ml-1">{subItem.name}</span></p>
+                                </button>
+                            ))}
+                        </div>
+                    )}
+
+                    {item.name === "Services" && servShowSubMenu && (
+                        <div className="py-2 space-y-2 pl-4">
+                            {servSubMenuItems.map((subItem) => (
                                 <button
                                     key={subItem.id}
                                     onClick={() => handleSubItemClick(subItem.nav)}

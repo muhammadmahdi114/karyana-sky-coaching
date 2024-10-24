@@ -116,7 +116,7 @@ export default function Providers() {
 
     return (
         <>
-            <NavBar activeState="Providers" />
+            <NavBar/>
             <Header />
             <div className="h-screen ml-60 bg-gray-100 px-8 py-5">
                 <div className="bg-white pl-4 w-72 p-2 flex space-x-2 rounded">
