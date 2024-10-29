@@ -109,12 +109,10 @@ export default function Categories() {
                                                 {category.color}
                                             </td>
                                             <td className="py-4 px-6 text-center">{category.description}</td>
-                                            <td className="font-medium text-center">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={category.featured}
-                                                    readOnly
-                                                />
+                                            <td className="text-center">
+                                                <span className={`px-2 py-1 rounded ${category.featured ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                                                    {category.featured ? 'Yes' : 'No'}
+                                                </span>
                                             </td>
                                             <td className="font-medium text-center">{category.order}</td>
                                             <td className="py-4 px-6 text-center font-bold">{category.parent_category}</td>

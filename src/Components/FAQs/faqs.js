@@ -2,48 +2,43 @@ import React, { useState } from "react";
 import NavBar from "../NavBar/navBar";
 import Header from "../Header/header";
 
-export default function ServiceList() {
+export default function FAQs() {
     const [search, setSearch] = useState("");
     const [menuOpen, setMenuOpen] = useState(null);
 
-    const services = [
+    const faqs = [
         {
             id: 1,
-            image: "/dp-user.png",
-            name: "Post Party Cleaning",
-            provider: "Cleaning Services Inc.",
-            price: "400",
-            discount_price: "350",
-            categories: "Medical Services, Beauty & Hair Cuts",
-            available: false,
-            updatedAt: "22/10/24",
+            question: "Voluptas consequatur tempore sit ad.",
+            answer: "Alice led the way, and the Dormouse indi...",
+            faq_category: "Misc",
+            update_at: "10/11/21"
         },
         {
             id: 2,
-            image: "/dp-user.png",
-            name: "Wedding Photos",
-            provider: "Concrete Gusikowski Ltd",
-            price: "500",
-            discount_price: "-",
-            categories: "Laundry Service, Washing & Cleaning",
-            available: true,
-            updatedAt: "02/10/24",
+            question: "Velit ea et officiis fugiat distinctio i.",
+            answer: "Caterpillar. Alice thought the whole thi",
+            faq_category: "Misc",
+            update_at: "22/09/21"
         },
         {
             id: 3,
-            image: "/dp-user.png",
-            name: "Hair Style Service",
-            provider: "Architect Lehner, Mitchell and Balistreri",
-            price: "350",
-            discount_price: "300",
-            categories: "Media & Photography",
-            available: true,
-            updatedAt: "14/10/24",
+            question: "Ullam neque labore et. Quis quia ipsum s...",
+            answer: "The Dormouse slowly opened his eyes were.",
+            faq_category: "EServices",
+            update_at: "22/02/21"
+        },
+        {
+            id: 4,
+            question: "How much would it cost.",
+            answer: "Not much.",
+            faq_category: "General",
+            update_at: "22/02/21"
         },
     ];
 
-    const filteredServices = services.filter((service) =>
-        service.name.toLowerCase().includes(search.toLowerCase())
+    const filteredFAQs = faqs.filter((faq) =>
+        faq.question.toLowerCase().includes(search.toLowerCase())
     );
 
     const toggleMenu = (id) => {
@@ -62,7 +57,7 @@ export default function ServiceList() {
                 <div className="mt-4">
                     <div>
                         <div className="flex w-full justify-between">
-                            <h1 className="font-bold text-2xl my-6">Services</h1>
+                            <h1 className="font-bold text-2xl my-6">FAQs</h1>
                             <div className="flex gap-x-5 justify-center items-center">
                                 <div className="flex px-2 py-4 rounded-xl bg-white space-x-2">
                                     <img src="/Search.png" alt="Search" />
@@ -80,42 +75,24 @@ export default function ServiceList() {
                             <table className="min-w-full bg-white border border-gray-200">
                                 <thead>
                                     <tr className="text-gray-500 font-semibold text-left">
-                                        <th className="py-4 px-6 text-center">Image</th>
-                                        <th className="py-4 px-6 text-center">Name</th>
-                                        <th className="py-4 px-6 text-center">Provider</th>
-                                        <th className="py-4 px-6 text-center">Price</th>
-                                        <th className="py-4 px-6 text-center">Discounted Price</th>
-                                        <th className="py-4 px-6 text-center">Categories</th>
-                                        <th className="py-4 px-6 text-center">Available</th>
+                                        <th className="py-4 px-6 text-center">Question</th>
+                                        <th className="py-4 px-6 text-center">Answer</th>
+                                        <th className="py-4 px-6 text-center">FAQ Category</th>
                                         <th className="py-4 px-6 text-center">Updated At</th>
                                         <th className="py-4 px-6 text-center"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {filteredServices.map((service) => (
-                                        <tr key={service.id} className="border-t hover:bg-gray-100">
-                                            <td className="py-4 px-6 flex justify-center items-center">
-                                                <img
-                                                    src={service.image}
-                                                    alt={service.name}
-                                                    className="w-10 h-10 rounded-full"
-                                                />
-                                            </td>
-                                            <td className="font-medium text-center">{service.name}</td>
-                                            <td className="font-medium text-center">{service.provider}</td>
-                                            <td className="py-4 px-6 text-center">{service.price}</td>
-                                            <td className="font-medium text-center">{service.discount_price}</td>
-                                            <td className="py-4 px-6 text-center">{service.categories}</td>
-                                            <td className="text-center">
-                                                <span className={`px-2 py-1 rounded ${service.available ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
-                                                    {service.available ? 'Yes' : 'No'}
-                                                </span>
-                                            </td>
-                                            <td className="py-4 px-6 text-center">{service.updatedAt}</td>
+                                    {filteredFAQs.map((faq) => (
+                                        <tr key={faq.id} className="border-t hover:bg-gray-100">
+                                            <td className="font-medium text-center">{faq.question}</td>
+                                            <td className="font-medium text-center">{faq.answer}</td>
+                                            <td className="py-4 px-6 text-center">{faq.faq_category}</td>
+                                            <td className="py-4 px-6 text-center">{faq.update_at}</td>
                                             <td className="py-4 px-6 text-right relative">
                                                 <button
                                                     className="focus:outline-none"
-                                                    onClick={() => toggleMenu(service.id)}
+                                                    onClick={() => toggleMenu(faq.id)}
                                                 >
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
@@ -132,18 +109,18 @@ export default function ServiceList() {
                                                         />
                                                     </svg>
                                                 </button>
-                                                {menuOpen === service.id && (
+                                                {menuOpen === faq.id && (
                                                     <div className="absolute right-0 z-10 mt-2 w-48 bg-white x rounded-lg shadow-lg">
                                                         <ul>
                                                             <li
                                                                 className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                                                                onClick={() => alert(`Edit ${service.name}`)}
+                                                                onClick={() => alert(`Edit ${faq.question}`)}
                                                             >
                                                                 Edit
                                                             </li>
                                                             <li
                                                                 className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                                                                onClick={() => alert(`Delete ${service.name}`)}
+                                                                onClick={() => alert(`Delete ${faq.question}`)}
                                                             >
                                                                 Delete
                                                             </li>

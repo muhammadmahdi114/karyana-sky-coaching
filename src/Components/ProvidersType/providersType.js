@@ -29,7 +29,7 @@ export default function ProvidersType() {
     ];
     return (
         <>
-            <NavBar/>
+            <NavBar />
             <Header />
             <div className="ml-60 h-screen bg-gray-100 px-8 py-5">
                 <h1 className="font-bold text-2xl my-6">Providers Type</h1>
@@ -49,13 +49,10 @@ export default function ProvidersType() {
                                 <tr key={type.id} className="border-t hover:bg-gray-100">
                                     <td className="py-4 px-6">{type.providerType}</td>
                                     <td className="py-4 px-6">{type.commission}</td>
-
                                     <td className="py-4 px-6">
-                                        <input
-                                            type="checkbox"
-                                            checked={type.disabled}
-                                            className="toggle-checkbox"
-                                        />
+                                        <span className={`px-2 py-1 rounded ${type.disabled ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                                            {type.disabled ? 'Yes' : 'No'}
+                                        </span>
                                     </td>
                                     <td className="py-4 px-6">{type.updatedAt}</td>
                                     <td className="py-4 px-6 text-right">

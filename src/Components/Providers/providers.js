@@ -27,7 +27,7 @@ export default function Providers() {
             type: "Grocery",
             phNumber: "03312345678",
             availableRange: "15KMs",
-            availability: true,
+            availability: false,
             accept: true,
         },
         {
@@ -116,7 +116,7 @@ export default function Providers() {
 
     return (
         <>
-            <NavBar/>
+            <NavBar />
             <Header />
             <div className="h-screen ml-60 bg-gray-100 px-8 py-5">
                 <div className="bg-white pl-4 w-72 p-2 flex space-x-2 rounded">
@@ -196,19 +196,15 @@ export default function Providers() {
                                                 <td className="py-4 px-6">{user.type}</td>
                                                 <td className="py-4 px-6">{user.phNumber}</td>
                                                 <td className="py-4 px-6">{user.availableRange}</td>
-                                                <td className="py-4 px-6">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={user.availability}
-                                                        className="toggle-checkbox"
-                                                    />
+                                                <td className="text-center">
+                                                    <span className={`px-2 py-1 rounded ${user.availability ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                                                        {user.availability ? 'Yes' : 'No'}
+                                                    </span>
                                                 </td>
-                                                <td className="py-4 px-6">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={user.accept}
-                                                        className="toggle-checkbox"
-                                                    />
+                                                <td className="text-center">
+                                                    <span className={`px-2 py-1 rounded ${user.accept ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                                                        {user.accept ? 'Yes' : 'No'}
+                                                    </span>
                                                 </td>
                                                 <td className="py-4 px-6 text-right">
                                                     <button className="focus:outline-none">
@@ -347,19 +343,15 @@ export default function Providers() {
                                                 <td className="py-4 px-6">{provider.addresses}</td>
                                                 <td className="py-4 px-6">{provider.availableRange}</td>
                                                 <td className="py-4 px-6">{provider.taxes}</td>
-                                                <td className="py-4 px-6">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={provider.availability}
-                                                        className="toggle-checkbox"
-                                                    />
+                                                <td className="text-center">
+                                                    <span className={`px-2 py-1 rounded ${provider.availability ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                                                        {provider.availability ? 'Yes' : 'No'}
+                                                    </span>
                                                 </td>
-                                                <td className="py-4 px-6">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={provider.accepted}
-                                                        className="toggle-checkbox"
-                                                    />
+                                                <td className="text-center">
+                                                    <span className={`px-2 py-1 rounded ${provider.accepted ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                                                        {provider.accepted ? 'Yes' : 'No'}
+                                                    </span>
                                                 </td>
                                                 <td className="py-4 px-6">{provider.updatedAt}</td>
                                                 <td className="py-4 px-6 text-right">

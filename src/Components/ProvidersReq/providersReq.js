@@ -94,12 +94,10 @@ export default function ProvidersReq() {
                                     <td className="py-4 px-6">{provider.addresses}</td>
                                     <td className="py-4 px-6">{provider.availableRange}</td>
                                     <td className="py-4 px-6">{provider.taxes}</td>
-                                    <td className="py-4 px-6">
-                                        <input
-                                            type="checkbox"
-                                            checked={provider.availability}
-                                            className="toggle-checkbox"
-                                        />
+                                    <td className="text-center">
+                                        <span className={`px-2 py-1 rounded ${provider.availability ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+                                            {provider.availability ? 'Yes' : 'No'}
+                                        </span>
                                     </td>
                                     <td className="py-4 px-6">{provider.updatedAt}</td>
                                     <td className="py-4 px-6 text-right">

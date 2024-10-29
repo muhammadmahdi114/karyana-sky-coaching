@@ -26,7 +26,17 @@ export default function NavBar() {
             setActiveSection(currentPath);
             setProvShowSubMenu(false);
             setServShowSubMenu(true);
+        } else if (currentPath === "/coupons") {
+            setActiveSection("Coupons");
+            setProvShowSubMenu(false);
+            setServShowSubMenu(false);
         }
+        else if (currentPath === "/faqs") {
+            setActiveSection("FAQs");
+            setProvShowSubMenu(false);
+            setServShowSubMenu(false);
+        }
+
     }, [location]);
 
     const menuItems = [
@@ -54,6 +64,18 @@ export default function NavBar() {
             activeIcon: "/activeServices.svg",
             inactiveIcon: "/inactiveServices.svg",
         },
+        {
+            id: 5,
+            name: "Coupons",
+            activeIcon: "/activeCoupons.svg",
+            inactiveIcon: "/inactiveCoupons.svg",
+        },
+        {
+            id: 6,
+            name: "FAQs",
+            activeIcon: "/activeFAQ.svg",
+            inactiveIcon: "/inactiveFAQ.svg",
+        },
     ];
 
     const provSubMenuItems = [
@@ -75,11 +97,16 @@ export default function NavBar() {
         } else if (itemName === "Providers") {
             setServShowSubMenu(false);
             setProvShowSubMenu(true);
-        }
-        else if (itemName === "Services") {
+        } else if (itemName === "Services") {
             setServShowSubMenu(true);
             setProvShowSubMenu(false);
-        }
+        } else if (itemName === "Coupons") {
+            setActiveSection("Coupons");
+            navigate("/coupons");
+        } else if (itemName === "FAQs") {
+            setActiveSection("FAQs");
+            navigate("/faqs");
+        } 
     };
 
     const handleSubItemClick = (subItemNav) => {
@@ -114,7 +141,7 @@ export default function NavBar() {
                                 <button
                                     key={subItem.id}
                                     onClick={() => handleSubItemClick(subItem.nav)}
-                                    className={`flex items-center gap-x-2 px-6 py-2 w-full ${`/${subItem.nav}` === activeSection ? 'border-l-4 border-primary bg-gray-50' : ''}`}
+                                    className={`flex items-center gap-x-2 px-6 py-2 w-full ${`/${subItem.nav}` === activeSection ? 'border-l-4 -ml-4 border-primary bg-gray-50' : ''}`}
                                 >
                                     <p className="font-bold"> &gt; <span className="font-normal ml-1">{subItem.name}</span></p>
                                 </button>
@@ -128,7 +155,7 @@ export default function NavBar() {
                                 <button
                                     key={subItem.id}
                                     onClick={() => handleSubItemClick(subItem.nav)}
-                                    className={`flex items-center gap-x-2 px-6 py-2 w-full ${`/${subItem.nav}` === activeSection ? 'border-l-4 border-primary bg-gray-50' : ''}`}
+                                    className={`flex items-center gap-x-2 px-6 py-2 w-full ${`/${subItem.nav}` === activeSection ? 'border-l-4 -ml-4 border-primary bg-gray-50' : ''}`}
                                 >
                                     <p className="font-bold"> &gt; <span className="font-normal ml-1">{subItem.name}</span></p>
                                 </button>
