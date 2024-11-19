@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
 const User = require('./src/Models/user');
 const ServiceProvider = require('./src/Models/serviceProvider');
 const Category = require('./src/Models/category');
@@ -8,6 +9,7 @@ const Service = require('./src/Models/services');
 const FAQ = require('./src/Models/faq');
 const Coupon = require('./src/Models/coupon');
 const ProviderType = require('./src/Models/providerType');
+const Admin = require('./src/Models/admin');
 
 require('dotenv').config();
 
@@ -24,6 +26,55 @@ app.use((err, req, res, next) => {
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("MongoDB connected"))
     .catch((error) => console.error("Connection error:", error));
+
+app.post("/register-admin", async (req, res) => {
+    const { name, image, email, password } = req.body;
+
+    try {
+        const check = await Admin.findOne({ email: email });
+
+        if (check) {
+            return res.status(409).json({ success: false, message: "User already exists" });
+        } else {
+            const EncPassword = await bcrypt.hash(password, 10);
+            const user = await Admin.create({
+                name,
+                image,
+                email,
+                password: EncPassword,
+            });
+            return res.status(201).json({ success: true, user });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+});
+
+app.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!password) {
+        return res.status(400).json({ success: false, message: "Password is required" });
+    };
+
+    try {
+        const user = await Admin.findOne({ email });
+
+        if (user && await bcrypt.compare(password, user.password)) {
+            return res.status(200).json({
+                success: true,
+                username: user.name,
+                userImage: user.image
+            });
+        } else {
+            return res.status(401).json({ success: false, message: "Invalid email or password" });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+});
 
 app.get('/get-users', async (req, res) => {
     try {

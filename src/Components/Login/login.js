@@ -1,18 +1,38 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useUser } from "../../Context/userContext";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const { setUser } = useUser();
 
     async function submit(e) {
         e.preventDefault();
-        if (email === "admin@demo.com" && password === "123456") {
-            navigate("/dashboard")
-        }
-        else {
-            alert("Invalid Credentials");
+        try {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address");
+                return;
+            }
+
+            const response = await axios.post("http://localhost:8000/login", {
+                email,
+                password,
+            });
+
+            if (response.data.success) {
+                const userData = response.data;
+                setUser(userData);
+                navigate("/dashboard");
+            } else {
+                alert(response.data.message);
+            }
+        } catch (error) {
+            alert("Error occurred while logging in");
+            console.log(error);
         }
     }
 
