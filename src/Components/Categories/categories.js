@@ -1,50 +1,83 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import NavBar from "../NavBar/navBar";
 import Header from "../Header/header";
 
 export default function Categories() {
     const [search, setSearch] = useState("");
     const [menuOpen, setMenuOpen] = useState(null);
+    const [addCategory, setAddCategory] = useState(false);
+    const [newCategory, setNewCategory] = useState({
+        image: "",
+        name: "",
+        color: "",
+        description: "",
+        featured: false,
+        order: "",
+    });
 
-    const categories = [
-        {
-            id: 1,
-            image: "/dp-user.png",
-            name: "Car Services",
-            color: "#007AFF",
-            description: "Categories for all cars services",
-            featured: true,
-            order: "1",
-            parent_category: "Services",
-            updatedAt: "22/10/24",
-        },
-        {
-            id: 2,
-            image: "/dp-user.png",
-            name: "Medical Services",
-            color: "#0abde3",
-            description: "Categories for all Medical Services",
-            featured: true,
-            order: "2",
-            parent_category: "Services",
-            updatedAt: "02/10/24",
-        },
-        {
-            id: 3,
-            image: "/dp-user.png",
-            name: "Sewer Cleaning",
-            color: "#10ac84",
-            description: "Category for Sewer Cleaning",
-            featured: false,
-            order: "5",
-            parent_category: "Washing & Cleaning",
-            updatedAt: "12/10/24",
-        },
-    ];
+    const [categoryList, setCategoryList] = useState([]);
 
-    const filteredCategories = categories.filter((category) =>
-        category.name.toLowerCase().includes(search.toLowerCase())
-    );
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/get-categories');
+                setCategoryList(response.data);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+    const handleInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        const newValue = type === 'checkbox' ? checked : value;
+        setNewCategory({
+            ...newCategory,
+            [name]: newValue,
+        });
+    };
+
+    const handleAddCategory = async () => {
+        const newCategoryData = {
+            ...newCategory,
+            updatedAt: new Date().toLocaleDateString("en-GB")
+        };
+
+        try {
+            const response = await axios.post('http://localhost:8000/add-categories', newCategoryData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            setCategoryList([...categoryList, response.data]);
+            setAddCategory(false);
+            setNewCategory({
+                image: "",
+                name: "",
+                color: "",
+                description: "",
+                featured: false,
+                order: "",
+            });
+        } catch (error) {
+            console.error('Error adding category:', error);
+        }
+    };
+
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setNewCategory({
+                ...newCategory,
+                image: imageUrl,
+            });
+        }
+    };
 
     const toggleMenu = (id) => {
         if (menuOpen === id) {
@@ -52,6 +85,15 @@ export default function Categories() {
         } else {
             setMenuOpen(id);
         }
+    };
+
+    const filteredCategories = categoryList.filter((category) =>
+        category.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString("en-US", options);
     };
 
     return (
@@ -74,8 +116,110 @@ export default function Categories() {
                                         className="outline-none"
                                     />
                                 </div>
+                                <button
+                                    onClick={() => setAddCategory(true)}
+                                    className="bg-[#89b8ff] h-12 rounded-xl flex items-center px-5 py-4 text-primary font-bold"
+                                >
+                                    <span className="text-2xl mb-1 mr-2">+</span> Add Category
+                                </button>
                             </div>
                         </div>
+                        {addCategory && (
+                            <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                                <div className="bg-white rounded-xl shadow-lg w-80 max-h-[90vh] overflow-y-auto">
+                                    <h2 className="py-4 px-6 text-lg font-bold mb-4 text-start border-b-2 ">Add Category</h2>
+                                    <div className="px-6">
+                                        <div className="flex flex-col items-center mb-6">
+                                            <span className="w-full text-start mb-2">Profile Image</span>
+                                            <label className="flex flex-col items-center justify-center w-full text-sm h-40 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 transition duration-150">
+                                                {newCategory.image ? (
+                                                    <div className="mb-2">
+                                                        <img src={newCategory.image} alt="Uploaded" className="w-full h-40 object-cover rounded-xl" />
+
+                                                    </div>
+                                                ) : (
+                                                    <div className="mb-2 flex flex-col items-center justify-center gap-y-2">
+                                                        <img src="/upload.svg" alt="upload" />
+                                                        <div>
+                                                            <span className="text-primary underline">Click to upload</span>
+                                                            <span className="ml-1">or drag and drop</span>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                <input
+                                                    id="file-upload"
+                                                    type="file"
+                                                    name="image"
+                                                    onChange={handleImageUpload}
+                                                    className="hidden"
+                                                />
+                                            </label>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            placeholder="Name"
+                                            value={newCategory.name}
+                                            onChange={handleInputChange}
+                                            className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                                        />
+                                        <input
+                                            type="text"
+                                            name="color"
+                                            placeholder="Color"
+                                            value={newCategory.color}
+                                            onChange={handleInputChange}
+                                            className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                                        />
+                                        <input
+                                            type="text"
+                                            name="description"
+                                            placeholder="Description"
+                                            value={newCategory.description}
+                                            onChange={handleInputChange}
+                                            className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                                        />
+                                        <label className="flex items-center ml-2 mb-4">
+                                            <input
+                                                type="checkbox"
+                                                name="featured"
+                                                checked={newCategory.featured}
+                                                onChange={(e) => setNewCategory({
+                                                    ...newCategory,
+                                                    featured: e.target.checked
+                                                })}
+                                                className="mr-2 h-5 w-5 text-blue-500 border border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                            />
+                                            Featured
+                                        </label>
+
+                                        <input
+                                            type="number"
+                                            name="order"
+                                            placeholder="Order"
+                                            value={newCategory.order}
+                                            onChange={handleInputChange}
+                                            className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                                        />
+                                        <div className="flex justify-between gap-x-3 mt-4">
+                                            <button
+                                                onClick={() => setAddCategory(false)}
+                                                className="bg-gray-300 rounded-lg px-10 py-2 transition duration-150 hover:bg-gray-400"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                onClick={handleAddCategory}
+                                                className="bg-blue-500 text-white rounded-lg px-12 py-2 transition duration-150 hover:bg-blue-600"
+                                            >
+                                                Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                         <div className="overflow-x-auto">
                             <table className="min-w-full bg-white border border-gray-200">
                                 <thead>
@@ -86,7 +230,6 @@ export default function Categories() {
                                         <th className="py-4 px-6 text-center">Description</th>
                                         <th className="py-4 px-6 text-center">Featured</th>
                                         <th className="py-4 px-6 text-center">Order</th>
-                                        <th className="py-4 px-6 text-center">Parent Category</th>
                                         <th className="py-4 px-6 text-center">Updated At</th>
                                         <th className="py-4 px-6 text-center"></th>
                                     </tr>
@@ -115,8 +258,7 @@ export default function Categories() {
                                                 </span>
                                             </td>
                                             <td className="font-medium text-center">{category.order}</td>
-                                            <td className="py-4 px-6 text-center font-bold">{category.parent_category}</td>
-                                            <td className="py-4 px-6 text-center">{category.updatedAt}</td>
+                                            <td className="py-4 px-6 text-center">{formatDate(category.updatedAt)}</td>
                                             <td className="py-4 px-6 text-right relative">
                                                 <button
                                                     className="focus:outline-none"

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import NavBar from "../NavBar/navBar";
 import Header from "../Header/header";
 
@@ -7,14 +8,25 @@ export default function Dashboard() {
     const [totalServiceProviders, setTotalServiceProviders] = useState(null);
     const [totalCategories, setTotalCategories] = useState(null);
     const [totalBookings, setTotalBookings] = useState(null);
-    const [totalRevenue, setTotalRevenue] = useState(10000);
+    const [totalRevenue, setTotalRevenue] = useState(null);
 
     useEffect(() => {
-        setTotalUsers(500);
-        setTotalServiceProviders(54);
-        setTotalCategories(12);
-        setTotalBookings(431);
-        setTotalRevenue(10000);
+        const fetchMetrics = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/get-dashboard-metrics');
+                const { totalUsers, totalServiceProviders, totalCategories } = response.data;
+
+                setTotalUsers(totalUsers);
+                setTotalServiceProviders(totalServiceProviders);
+                setTotalCategories(totalCategories);
+                setTotalBookings(500);
+                setTotalRevenue(500000);
+            } catch (error) {
+                console.error('Error fetching dashboard metrics:', error);
+            }
+        };
+
+        fetchMetrics();
     }, []);
 
     const cards = [
@@ -47,7 +59,7 @@ export default function Dashboard() {
 
     return (
         <>
-        <NavBar />
+            <NavBar />
             <Header />
             <div className="h-screen ml-60 bg-gray-100 px-8 py-5">
                 <h1 className="font-bold text-3xl my-6">Dashboard</h1>

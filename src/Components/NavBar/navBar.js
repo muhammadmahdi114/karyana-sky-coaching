@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 export default function NavBar() {
     const [activeSection, setActiveSection] = useState(null);
     const [provShowSubMenu, setProvShowSubMenu] = useState(false);
-    const [servShowSubMenu, setServShowSubMenu] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -13,30 +12,22 @@ export default function NavBar() {
         if (currentPath === "/dashboard") {
             setActiveSection("Dashboard");
             setProvShowSubMenu(false);
-            setServShowSubMenu(false);
         } else if (currentPath === "/categories") {
             setActiveSection("Categories");
             setProvShowSubMenu(false);
-            setServShowSubMenu(false);
         } else if (["/providers", "/providers-req", "/providers-type"].includes(currentPath)) {
-            setActiveSection(currentPath);
+            setActiveSection("Providers");
             setProvShowSubMenu(true);
-            setServShowSubMenu(false);
-        } else if (["/services", "/service-list"].includes(currentPath)) {
-            setActiveSection(currentPath);
+        } else if (currentPath === "/services") {
+            setActiveSection("Services");
             setProvShowSubMenu(false);
-            setServShowSubMenu(true);
         } else if (currentPath === "/coupons") {
             setActiveSection("Coupons");
             setProvShowSubMenu(false);
-            setServShowSubMenu(false);
-        }
-        else if (currentPath === "/faqs") {
+        } else if (currentPath === "/faqs") {
             setActiveSection("FAQs");
             setProvShowSubMenu(false);
-            setServShowSubMenu(false);
         }
-
     }, [location]);
 
     const menuItems = [
@@ -60,7 +51,7 @@ export default function NavBar() {
         },
         {
             id: 4,
-            name: "Services",
+            name: "Services",  
             activeIcon: "/activeServices.svg",
             inactiveIcon: "/inactiveServices.svg",
         },
@@ -78,38 +69,26 @@ export default function NavBar() {
         },
     ];
 
+
     const provSubMenuItems = [
         { id: 1, name: "Providers", nav: "providers" },
         { id: 2, name: "Providers Requests", nav: "providers-req" },
         { id: 3, name: "Providers Types", nav: "providers-type" },
     ];
 
-    const servSubMenuItems = [
-        { id: 1, name: "Service List", nav: "service-list" },
-    ];
-
     const handleMainItemClick = (itemName) => {
-        if (itemName === "Dashboard") {
-            navigate("/dashboard");
-        } else if (itemName === "Categories") {
-            setActiveSection("Categories");
-            navigate("/categories");
-        } else if (itemName === "Providers") {
-            setServShowSubMenu(false);
+        setActiveSection(itemName);
+        if (itemName === "Providers") {
             setProvShowSubMenu(true);
-        } else if (itemName === "Services") {
-            setServShowSubMenu(true);
+        } else {
             setProvShowSubMenu(false);
-        } else if (itemName === "Coupons") {
-            setActiveSection("Coupons");
-            navigate("/coupons");
-        } else if (itemName === "FAQs") {
-            setActiveSection("FAQs");
-            navigate("/faqs");
-        } 
+            navigate(`/${itemName.toLowerCase().replace(" ", "-")}`);            
+        }
     };
 
+
     const handleSubItemClick = (subItemNav) => {
+        setActiveSection("Providers");
         navigate(`/${subItemNav}`);
     };
 
@@ -121,15 +100,16 @@ export default function NavBar() {
                     <button
                         onClick={() => handleMainItemClick(item.name)}
                         className={`flex items-center gap-x-2 px-6 py-2 w-full ${item.name === activeSection ||
-                            (item.name === "Providers" && ["/providers", "/providers-req", "/providers-type"].includes(activeSection)) ||
-                            (item.name === "Services" && ["/services", "/service-list"].includes(activeSection)) ?
-                            'border-l-4 border-primary bg-gray-50' : ''}`}
+                                (item.name === "Providers" && provShowSubMenu) ? 'border-l-4 border-primary bg-gray-50' : ''
+                            }`}
                     >
                         <img
-                            src={item.name === activeSection ||
-                                (item.name === "Providers" && ["/providers", "/providers-req", "/providers-type"].includes(activeSection)) ||
-                                (item.name === "Services" && ["/services", "/service-list"].includes(activeSection)) ?
-                                item.activeIcon : item.inactiveIcon}
+                            src={
+                                item.name === activeSection ||
+                                    (item.name === "Providers" && provShowSubMenu)
+                                    ? item.activeIcon
+                                    : item.inactiveIcon
+                            }
                             alt={item.name}
                         />
                         <span>{item.name}</span>
@@ -141,21 +121,8 @@ export default function NavBar() {
                                 <button
                                     key={subItem.id}
                                     onClick={() => handleSubItemClick(subItem.nav)}
-                                    className={`flex items-center gap-x-2 px-6 py-2 w-full ${`/${subItem.nav}` === activeSection ? 'border-l-4 -ml-4 border-primary bg-gray-50' : ''}`}
-                                >
-                                    <p className="font-bold"> &gt; <span className="font-normal ml-1">{subItem.name}</span></p>
-                                </button>
-                            ))}
-                        </div>
-                    )}
-
-                    {item.name === "Services" && servShowSubMenu && (
-                        <div className="py-2 space-y-2 pl-4">
-                            {servSubMenuItems.map((subItem) => (
-                                <button
-                                    key={subItem.id}
-                                    onClick={() => handleSubItemClick(subItem.nav)}
-                                    className={`flex items-center gap-x-2 px-6 py-2 w-full ${`/${subItem.nav}` === activeSection ? 'border-l-4 -ml-4 border-primary bg-gray-50' : ''}`}
+                                    className={`flex items-center gap-x-2 px-6 py-2 w-full ${`/${subItem.nav}` === location.pathname ? 'border-l-4 -ml-4 border-primary bg-gray-50' : ''
+                                        }`}
                                 >
                                     <p className="font-bold"> &gt; <span className="font-normal ml-1">{subItem.name}</span></p>
                                 </button>

@@ -1,59 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../NavBar/navBar";
 import Header from "../Header/header";
+import axios from "axios";
 
 export default function Providers() {
     const [activeButton, setActiveButton] = useState("users");
     const [search, setSearch] = useState("");
     const [searchCity, setSearchCity] = useState("City");
     const [searchStatus, setSearchStatus] = useState("Status");
-    const users = [
-        {
-            id: 1,
-            name: "John Doe",
-            image: "/dp-user.png",
-            email: "doe@gmail.com",
-            type: "Karyana",
-            phNumber: "03312312323",
-            availableRange: "10KMs",
-            availability: true,
-            accept: true,
-        },
-        {
-            id: 2,
-            name: "Jane Smith",
-            image: "/dp-user.png",
-            email: "smith@gmail.com",
-            type: "Grocery",
-            phNumber: "03312345678",
-            availableRange: "15KMs",
-            availability: false,
-            accept: true,
-        },
-        {
-            id: 3,
-            name: "Mike Johnson",
-            image: "/dp-user.png",
-            email: "johnson@gmail.com",
-            type: "Bakery",
-            phNumber: "03312387654",
-            availableRange: "12KMs",
-            availability: true,
-            accept: false,
-        },
-    ];
-
-    const [userList, setUserList] = useState(users);
+    const [providerTypes, setProviderTypes] = useState([]);
+    const [userList, setUserList] = useState([]);
     const [addUser, setAddUser] = useState(false);
     const [newUser, setNewUser] = useState({
         name: "",
+        image: "",
         email: "",
-        type: "",
+        providerType: "",
         phNumber: "",
         availableRange: "",
         availability: true,
         accept: false,
     });
+
+    const [providerList, setProviderList] = useState([]);
+    const [addServiceProvider, setAddServiceProvider] = useState(false);
+    const [newServiceProvider, setNewServiceProvider] = useState({
+        image: "",
+        name: "",
+        providerType: "",
+        phNumber: "",
+        mobileNumber: "",
+        addresses: "",
+        availableRange: "",
+        taxes: "",
+        availability: "",
+        accepted: "",
+    });
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/get-users');
+                console.log('Fetched users:', response.data);
+                setUserList(response.data);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        };
+
+        const fetchProviders = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/get-providers');
+                console.log('Fetched Serive Providers:', response.data);
+                setProviderList(response.data);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        };
+
+        const fetchProviderTypes = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/get-provider-types');
+                setProviderTypes(response.data);
+            } catch (error) {
+                console.error('Error fetching provider types:', error);
+            }
+        };
+
+        fetchProviderTypes();
+        fetchUsers();
+        fetchProviders();
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -63,45 +80,83 @@ export default function Providers() {
         });
     };
 
-    const handleAddUser = () => {
-        const newUserData = { ...newUser, id: userList.length + 1, image: "/dp-user.png" };
-        setUserList([...userList, newUserData]);
-        setAddUser(false);
-        setNewUser({ name: "", email: "", type: "", phNumber: "", availableRange: "", availability: true, accept: false });
+    const handleServiceInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewServiceProvider({
+            ...newServiceProvider,
+            [name]: value,
+        });
     };
 
-    const serviceProvidersData = [
-        {
-            id: 1,
-            image: "/dp-user.png",
-            name: "Alice Brown",
-            providerType: "Plumber",
-            phNumber: "03312345679",
-            mobileNumber: "03312345680",
-            addresses: "123 Street, City",
-            availableRange: "20KMs",
-            taxes: "5%",
-            availability: true,
-            accepted: true,
-            updatedAt: "2024-10-20",
-        },
-        {
-            id: 2,
-            image: "/dp-user.png",
-            name: "Bob White",
-            providerType: "Electrician",
-            phNumber: "03312345681",
-            mobileNumber: "03312345682",
-            addresses: "456 Avenue, City",
-            availableRange: "25KMs",
-            taxes: "7%",
-            availability: false,
-            accepted: false,
-            updatedAt: "2024-10-21",
-        },
-    ];
+    const handleAddUser = async () => {
+        const newUserData = {
+            ...newUser,
+            id: userList.length + 1,
+            image: newUser.image || "/dp-user.png",
+        };
+        console.log("New User Data:", newUserData);
 
-    const filteredUsers = users.filter((user) => {
+        try {
+            const response = await axios.post("http://localhost:8000/add-users", newUserData, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            setUserList([...userList, response.data]);
+            setAddUser(false);
+            setNewUser({
+                name: "",
+                image: "",
+                email: "",
+                type: "",
+                phNumber: "",
+                availableRange: "",
+                availability: true,
+                accept: false,
+
+            });
+        } catch (error) {
+            if (error.response) {
+                console.error("Error in handleAddUser:", error.response.data);
+            } else {
+                console.error("Error in handleAddUser:", error.message);
+            }
+        }
+    };
+
+
+    const handleAddServiceProvider = async () => {
+        const newServiceProviderData = {
+            ...newServiceProvider,
+            image: newServiceProvider.image || "/dp-user.png",
+        };
+        console.log("New Service Provider Data:", newServiceProviderData);
+        try {
+            const response = await axios.post("http://localhost:8000/add-providers", newServiceProviderData, {
+                headers: { "Content-Type": "application/json" },
+            });
+
+            setProviderList([...providerList, response.data]);
+            setAddServiceProvider(false);
+            setNewServiceProvider({
+                image: "",
+                name: "",
+                type: "",
+                phNumber: "",
+                mobileNumber: "",
+                addresses: "",
+                availableRange: "",
+                taxes: "",
+                availability: "",
+                accepted: "",
+            });
+        } catch (error) {
+            console.error("Error adding service provider:", error);
+        }
+    };
+
+    const filteredUsers = userList.filter((user) => {
         const matchesName = user.name.toLowerCase().includes(search.toLowerCase());
         const matchesCity = searchCity === "City" || user.type.toLowerCase() === searchCity.toLowerCase();
         const matchesStatus = searchStatus === "Status" || (searchStatus === "active" ? user.availability : !user.availability);
@@ -109,10 +164,37 @@ export default function Providers() {
         return matchesName && matchesCity && matchesStatus;
     });
 
-    const filteredServiceProviders = serviceProvidersData.filter((provider) => {
+    const filteredServiceProviders = providerList.filter((provider) => {
         const matchesName = provider.name.toLowerCase().includes(search.toLowerCase());
         return matchesName;
     });
+
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setNewUser({
+                ...newUser,
+                image: imageUrl,
+            });
+        }
+    };
+
+    const handleProviderImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setNewServiceProvider({
+                ...newServiceProvider,
+                image: imageUrl,
+            });
+        }
+    };
+
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString("en-US", options);
+    };
 
     return (
         <>
@@ -231,61 +313,91 @@ export default function Providers() {
                             </div>
                             {addUser && (
                                 <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-                                    <div className="bg-white p-6 rounded-xl shadow-lg w-80">
-                                        <h2 className="text-lg font-bold mb-4 text-center">Add User</h2>
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            placeholder="Name"
-                                            value={newUser.name}
-                                            onChange={handleInputChange}
-                                            className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
-                                        />
-                                        <input
-                                            type="email"
-                                            name="email"
-                                            placeholder="Email"
-                                            value={newUser.email}
-                                            onChange={handleInputChange}
-                                            className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
-                                        />
-                                        <input
-                                            type="text"
-                                            name="type"
-                                            placeholder="Type"
-                                            value={newUser.type}
-                                            onChange={handleInputChange}
-                                            className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
-                                        />
-                                        <input
-                                            type="text"
-                                            name="phNumber"
-                                            placeholder="Phone Number"
-                                            value={newUser.phNumber}
-                                            onChange={handleInputChange}
-                                            className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
-                                        />
-                                        <input
-                                            type="text"
-                                            name="availableRange"
-                                            placeholder="Available Range"
-                                            value={newUser.availableRange}
-                                            onChange={handleInputChange}
-                                            className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
-                                        />
-                                        <div className="flex justify-end gap-x-3 mt-4">
-                                            <button
-                                                onClick={() => setAddUser(false)}
-                                                className="bg-gray-300 rounded-xl px-4 py-2 transition duration-150 hover:bg-gray-400"
-                                            >
-                                                Cancel
-                                            </button>
-                                            <button
-                                                onClick={handleAddUser}
-                                                className="bg-blue-500 text-white rounded-xl px-6 py-2 transition duration-150 hover:bg-blue-600"
-                                            >
-                                                Save
-                                            </button>
+                                    <div className="bg-white rounded-xl shadow-lg w-80 max-h-[90vh] overflow-y-auto">
+                                        <h2 className="py-4 px-6 text-lg font-bold mb-4 text-start border-b-2 ">Add User</h2>
+                                        <div className="px-6">
+                                            <div className="flex flex-col items-center mb-6">
+                                                <span className="w-full text-start mb-2">Profile Image</span>
+                                                <label className="flex flex-col items-center justify-center w-full text-sm h-40 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 transition duration-150">
+
+                                                    {newUser.image ? (
+                                                        <div className="mb-2">
+                                                            <img src={newUser.image} alt="Uploaded" className="w-full h-40 object-cover rounded-xl" />
+
+                                                        </div>
+                                                    ) : (
+                                                        <div className="mb-2 flex flex-col items-center justify-center gap-y-2">
+                                                            <img src="/upload.svg" alt="upload" />
+                                                            <div>
+                                                                <span className="text-primary underline">Click to upload</span>
+                                                                <span className="ml-1">or drag and drop</span>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    <input
+                                                        id="file-upload"
+                                                        type="file"
+                                                        name="image"
+                                                        onChange={handleImageUpload}
+                                                        className="hidden"
+                                                    />
+                                                </label>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                placeholder="Name"
+                                                value={newUser.name}
+                                                onChange={handleInputChange}
+                                                className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                            />
+                                            <input
+                                                type="email"
+                                                name="email"
+                                                placeholder="Email"
+                                                value={newUser.email}
+                                                onChange={handleInputChange}
+                                                className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                            />
+                                            <input
+                                                type="text"
+                                                name="type"
+                                                placeholder="Type"
+                                                value={newUser.type}
+                                                onChange={handleInputChange}
+                                                className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                            />
+                                            <input
+                                                type="text"
+                                                name="phNumber"
+                                                placeholder="Phone Number"
+                                                value={newUser.phNumber}
+                                                onChange={handleInputChange}
+                                                className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                            />
+                                            <input
+                                                type="text"
+                                                name="availableRange"
+                                                placeholder="Available Range"
+                                                value={newUser.availableRange}
+                                                onChange={handleInputChange}
+                                                className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                            />
+                                            <div className="flex justify-end gap-x-3 mt-4">
+                                                <button
+                                                    onClick={() => setAddUser(false)}
+                                                    className="bg-gray-300 rounded-xl px-4 py-2 transition duration-150 hover:bg-gray-400"
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    onClick={handleAddUser}
+                                                    className="bg-blue-500 text-white rounded-xl px-6 py-2 transition duration-150 hover:bg-blue-600"
+                                                >
+                                                    Save
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -306,6 +418,9 @@ export default function Providers() {
                                             onChange={(e) => setSearch(e.target.value)}
                                         />
                                     </div>
+                                    <button onClick={() => { setAddServiceProvider(true) }} className="bg-[#89b8ff] h-12 rounded-xl flex items-center px-5 py-4 text-primary font-bold">
+                                        <span className="text-2xl mb-1 mr-2">+</span> Add Service Provider
+                                    </button>
                                 </div>
                             </div>
                             <div className="overflow-x-auto">
@@ -353,7 +468,7 @@ export default function Providers() {
                                                         {provider.accepted ? 'Yes' : 'No'}
                                                     </span>
                                                 </td>
-                                                <td className="py-4 px-6">{provider.updatedAt}</td>
+                                                <td className="py-4 px-6">{formatDate(provider.updatedAt)}</td>
                                                 <td className="py-4 px-6 text-right">
                                                     <button className="focus:outline-none">
                                                         <svg
@@ -377,9 +492,146 @@ export default function Providers() {
                                     </tbody>
                                 </table>
                             </div>
+                            {addServiceProvider && (
+                                <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                                    <div className="bg-white rounded-xl shadow-lg w-80 max-h-[90vh] overflow-y-auto">
+                                        <h2 className="py-4 px-6 text-lg font-bold mb-4 text-start border-b-2 ">Add Service Provider</h2>
+                                        <div className="px-6">
+                                            <div className="flex flex-col items-center mb-6">
+                                                <span className="w-full text-start mb-2">Profile Image</span>
+                                                <label className="flex flex-col items-center justify-center w-full text-sm h-40 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 transition duration-150">
+
+                                                    {newServiceProvider.image ? (
+                                                        <div className="mb-2">
+                                                            <img src={newServiceProvider.image} alt="Uploaded" className="w-full h-40 object-cover rounded-xl" />
+
+                                                        </div>
+                                                    ) : (
+                                                        <div className="mb-2 flex flex-col items-center justify-center gap-y-2">
+                                                            <img src="/upload.svg" alt="upload" />
+                                                            <div>
+                                                                <span className="text-primary underline">Click to upload</span>
+                                                                <span className="ml-1">or drag and drop</span>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    <input
+                                                        id="file-upload"
+                                                        type="file"
+                                                        name="image"
+                                                        onChange={handleProviderImageUpload}
+                                                        className="hidden"
+                                                    />
+                                                </label>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                placeholder="Name"
+                                                value={newServiceProvider.name}
+                                                onChange={handleServiceInputChange}
+                                                className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                            />
+                                            <select
+                                                name="providerType"
+                                                value={newServiceProvider.providerType}
+                                                onChange={handleServiceInputChange}
+                                                className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                            >
+                                                <option value="" disabled>
+                                                    Select Provider Type
+                                                </option>
+                                                {providerTypes.map((type) => (
+                                                    <option key={type._id} value={type.name}>
+                                                        {type.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+
+                                            {/* <input
+                                                type="text"
+                                                name="providerType"
+                                                placeholder="Provider Type"
+                                                value={newServiceProvider.providerType}
+                                                onChange={handleServiceInputChange}
+                                                className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                            /> */}
+                                            <input
+                                                type="number"
+                                                name="phNumber"
+                                                placeholder="Phone Number"
+                                                value={newServiceProvider.phNumber}
+                                                onChange={handleServiceInputChange}
+                                                className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                            />
+                                            <input
+                                                type="number"
+                                                name="mobileNumber"
+                                                placeholder="Mobile Number"
+                                                value={newServiceProvider.mobileNumber}
+                                                onChange={handleServiceInputChange}
+                                                className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                            />
+                                            <input
+                                                type="text"
+                                                name="addresses"
+                                                placeholder="Address"
+                                                value={newServiceProvider.addresses}
+                                                onChange={handleServiceInputChange}
+                                                className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                            />
+                                            <input
+                                                type="text"
+                                                name="availableRange"
+                                                placeholder="Available Range"
+                                                value={newServiceProvider.availableRange}
+                                                onChange={handleServiceInputChange}
+                                                className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                            />
+                                            <input
+                                                type="text"
+                                                name="taxes"
+                                                placeholder="Taxes "
+                                                value={newServiceProvider.taxes}
+                                                onChange={handleServiceInputChange}
+                                                className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                            />
+                                            <label className="flex items-center ml-2 mb-4">
+                                                <input
+                                                    type="checkbox"
+                                                    name="featured"
+                                                    checked={newServiceProvider.availability}
+                                                    onChange={(e) => setNewServiceProvider({
+                                                        ...newServiceProvider,
+                                                        availability: e.target.checked
+                                                    })}
+                                                    className="mr-2 h-5 w-5 text-blue-500 border border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                                />
+                                                Available
+                                            </label>
+                                            <div className="flex justify-end gap-x-3 mt-4">
+                                                <button
+                                                    onClick={() => setAddServiceProvider(false)}
+                                                    className="bg-gray-300 rounded-xl px-4 py-2 transition duration-150 hover:bg-gray-400"
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    onClick={handleAddServiceProvider}
+                                                    className="bg-blue-500 text-white rounded-xl px-6 py-2 transition duration-150 hover:bg-blue-600"
+                                                >
+                                                    Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            )}
                         </div>
                     )}
-                </div>
+                </div >
             </div >
         </>
     );

@@ -1,50 +1,109 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import NavBar from "../NavBar/navBar";
 import Header from "../Header/header";
 
 export default function ServiceList() {
     const [search, setSearch] = useState("");
     const [menuOpen, setMenuOpen] = useState(null);
+    const [addService, setAddService] = useState(false);
+    const [providers, setProviders] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [newService, setNewService] = useState({
+        image: "",
+        name: "",
+        provider: "",
+        price: "",
+        discPrice: "",
+        categories: "",
+        available: false,
+    });
 
-    const services = [
-        {
-            id: 1,
-            image: "/dp-user.png",
-            name: "Post Party Cleaning",
-            provider: "Cleaning Services Inc.",
-            price: "400",
-            discount_price: "350",
-            categories: "Medical Services, Beauty & Hair Cuts",
-            available: false,
-            updatedAt: "22/10/24",
-        },
-        {
-            id: 2,
-            image: "/dp-user.png",
-            name: "Wedding Photos",
-            provider: "Concrete Gusikowski Ltd",
-            price: "500",
-            discount_price: "-",
-            categories: "Laundry Service, Washing & Cleaning",
-            available: true,
-            updatedAt: "02/10/24",
-        },
-        {
-            id: 3,
-            image: "/dp-user.png",
-            name: "Hair Style Service",
-            provider: "Architect Lehner, Mitchell and Balistreri",
-            price: "350",
-            discount_price: "300",
-            categories: "Media & Photography",
-            available: true,
-            updatedAt: "14/10/24",
-        },
-    ];
+    const [serviceList, setServiceList] = useState([]);
 
-    const filteredServices = services.filter((service) =>
-        service.name.toLowerCase().includes(search.toLowerCase())
-    );
+    useEffect(() => {
+        const fetchServices = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/get-services');
+                setServiceList(response.data);
+            } catch (error) {
+                console.error('Error fetching services:', error);
+            }
+        };
+
+        const fetchProviders = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/get-providers');
+                setProviders(response.data);
+            } catch (error) {
+                console.error('Error fetching providers:', error);
+            }
+        };
+
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/get-categories');
+                setCategories(response.data);
+            } catch (error) {
+                console.error('Error fetching providers:', error);
+            }
+        };
+
+        fetchCategories();
+        fetchProviders();
+        fetchServices();
+    }, []);
+
+    const handleInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        const newValue = type === 'checkbox' ? checked : value;
+        setNewService({
+            ...newService,
+            [name]: newValue,
+        });
+    };
+
+    const handleAddService = async () => {
+        const newServiceData = {
+            ...newService,
+            updatedAt: new Date().toLocaleDateString("en-GB"),
+            discPrice: parseInt(newService.discPrice)
+        };
+        console.log("New Service DATA: ", newServiceData);
+
+        try {
+            const response = await axios.post('http://localhost:8000/add-services', newServiceData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            setServiceList([...serviceList, response.data]);
+            setAddService(false);
+            setNewService({
+                image: "",
+                name: "",
+                provider: "",
+                price: "",
+                discPrice: "",
+                categories: "",
+                available: false,
+            });
+        } catch (error) {
+            console.error('Error adding service:', error);
+        }
+    };
+
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setNewService({
+                ...newService,
+                image: imageUrl,
+            });
+        }
+    };
 
     const toggleMenu = (id) => {
         if (menuOpen === id) {
@@ -52,6 +111,15 @@ export default function ServiceList() {
         } else {
             setMenuOpen(id);
         }
+    };
+
+    const filteredServices = serviceList.filter((service) =>
+        service.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString("en-US", options);
     };
 
     return (
@@ -74,8 +142,131 @@ export default function ServiceList() {
                                         className="outline-none"
                                     />
                                 </div>
+                                <button
+                                    onClick={() => setAddService(true)}
+                                    className="bg-[#89b8ff] h-12 rounded-xl flex items-center px-5 py-4 text-primary font-bold"
+                                >
+                                    <span className="text-2xl mb-1 mr-2">+</span> Add Service
+                                </button>
                             </div>
                         </div>
+                        {addService && (
+                            <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                                <div className="bg-white rounded-xl shadow-lg w-80 max-h-[90vh] overflow-y-auto">
+                                    <h2 className="py-4 px-6 text-lg font-bold mb-4 text-start border-b-2 ">Add Service</h2>
+                                    <div className="px-6">
+                                        <div className="flex flex-col items-center mb-6">
+                                            <span className="w-full text-start mb-2">Profile Image</span>
+                                            <label className="flex flex-col items-center justify-center w-full text-sm h-40 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 transition duration-150">
+                                                {newService.image ? (
+                                                    <div className="mb-2">
+                                                        <img src={newService.image} alt="Uploaded" className="w-full h-40 object-cover rounded-xl" />
+
+                                                    </div>
+                                                ) : (
+                                                    <div className="mb-2 flex flex-col items-center justify-center gap-y-2">
+                                                        <img src="/upload.svg" alt="upload" />
+                                                        <div>
+                                                            <span className="text-primary underline">Click to upload</span>
+                                                            <span className="ml-1">or drag and drop</span>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                <input
+                                                    id="file-upload"
+                                                    type="file"
+                                                    name="image"
+                                                    onChange={handleImageUpload}
+                                                    className="hidden"
+                                                />
+                                            </label>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            placeholder="Name"
+                                            value={newService.name}
+                                            onChange={handleInputChange}
+                                            className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                                        />
+                                        <select
+                                            name="provider"
+                                            value={newService.provider}
+                                            onChange={handleInputChange}
+                                            className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                        >
+                                            <option value="" disabled>
+                                                Select Provider
+                                            </option>
+                                            {providers.map((provider) => (
+                                                <option key={provider._id} value={provider.name}>
+                                                    {provider.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <input
+                                            type="number"
+                                            name="price"
+                                            placeholder="Price"
+                                            value={newService.price}
+                                            onChange={handleInputChange}
+                                            className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                                        />
+                                        <input
+                                            type="number"
+                                            name="discPrice"
+                                            placeholder="Discounted Price"
+                                            value={newService.discPrice}
+                                            onChange={handleInputChange}
+                                            className="border border-gray-300 rounded-xl p-3 mb-4 w-full"
+                                        />
+                                        <select
+                                            name="categories"
+                                            value={newService.categories}
+                                            onChange={handleInputChange}
+                                            className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
+                                        >
+                                            <option value="" disabled>
+                                                Select Category
+                                            </option>
+                                            {categories.map((category) => (
+                                                <option key={category._id} value={category.name}>
+                                                    {category.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <label className="flex items-center ml-2 mb-4">
+                                            <input
+                                                type="checkbox"
+                                                name="featured"
+                                                checked={newService.available}
+                                                onChange={(e) => setNewService({
+                                                    ...newService,
+                                                    available: e.target.checked
+                                                })}
+                                                className="mr-2 h-5 w-5 text-blue-500 border border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                            />
+                                            Featured
+                                        </label>
+                                        <div className="flex justify-between gap-x-3 mt-4">
+                                            <button
+                                                onClick={() => setAddService(false)}
+                                                className="bg-gray-300 rounded-lg px-10 py-2 transition duration-150 hover:bg-gray-400"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                onClick={handleAddService}
+                                                className="bg-blue-500 text-white rounded-lg px-12 py-2 transition duration-150 hover:bg-blue-600"
+                                            >
+                                                Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                         <div className="overflow-x-auto">
                             <table className="min-w-full bg-white border border-gray-200">
                                 <thead>
@@ -104,14 +295,14 @@ export default function ServiceList() {
                                             <td className="font-medium text-center">{service.name}</td>
                                             <td className="font-medium text-center">{service.provider}</td>
                                             <td className="py-4 px-6 text-center">{service.price}</td>
-                                            <td className="font-medium text-center">{service.discount_price}</td>
+                                            <td className="font-medium text-center">{service.discPrice}</td>
                                             <td className="py-4 px-6 text-center">{service.categories}</td>
                                             <td className="text-center">
                                                 <span className={`px-2 py-1 rounded ${service.available ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
                                                     {service.available ? 'Yes' : 'No'}
                                                 </span>
                                             </td>
-                                            <td className="py-4 px-6 text-center">{service.updatedAt}</td>
+                                            <td className="py-4 px-6 text-center">{formatDate(service.updatedAt)}</td>
                                             <td className="py-4 px-6 text-right relative">
                                                 <button
                                                     className="focus:outline-none"

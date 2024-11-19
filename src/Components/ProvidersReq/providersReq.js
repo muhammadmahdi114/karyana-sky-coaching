@@ -41,6 +41,11 @@ export default function ProvidersReq() {
         const matchesName = provider.name.toLowerCase().includes(search.toLowerCase());
         return matchesName;
     });
+
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString("en-US", options);
+    };
     return (
         <>
             <NavBar />
@@ -99,7 +104,7 @@ export default function ProvidersReq() {
                                             {provider.availability ? 'Yes' : 'No'}
                                         </span>
                                     </td>
-                                    <td className="py-4 px-6">{provider.updatedAt}</td>
+                                    <td className="py-4 px-6">{formatDate(provider.updatedAt)}</td>
                                     <td className="py-4 px-6 text-right">
                                         <button className="focus:outline-none">
                                             <svg
