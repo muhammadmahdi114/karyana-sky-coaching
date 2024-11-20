@@ -9,6 +9,9 @@ import Categories from './Components/Categories/categories';
 import ServiceList from './Components/ServiceList/serviceList';
 import Coupons from './Components/Coupons/coupons';
 import FAQs from './Components/FAQs/faqs';
+import PrivacyPolicy from './Components/PrivacyPolicy/privacyPolicy';
+import TermsNCondtion from './Components/TermsNConditions/termsNCondition';
+import AboutUs from './Components/AboutUs/aboutUs';
 
 function App() {
   useEffect(() => {
@@ -27,6 +30,9 @@ function App() {
         <Route path="/services" element={<ServiceList />} />
         <Route path="/coupons" element={<Coupons />} />
         <Route path="/faqs" element={<FAQs />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-and-conditions" element={<TermsNCondtion />} />
+        <Route path="/about-us" element={<AboutUs />} />
       </Routes>
     </Router>
   );

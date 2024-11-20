@@ -10,6 +10,9 @@ const FAQ = require('./src/Models/faq');
 const Coupon = require('./src/Models/coupon');
 const ProviderType = require('./src/Models/providerType');
 const Admin = require('./src/Models/admin');
+const PrivacyPolicy = require("./src/Models/privacyPolicy");
+const TermsNConditions = require('./src/Models/termsNConditions');
+const AboutUs = require('./src/Models/aboutUs');
 
 require('dotenv').config();
 
@@ -282,6 +285,96 @@ app.post('/add-provider-types', async (req, res) => {
     } catch (error) {
         console.error('Error saving new provider type:', error);
         res.status(500).json({ error: error.message });
+    }
+});
+
+app.get("/get-privacy-policy", async (req, res) => {
+    try {
+        const policy = await PrivacyPolicy.findOne();
+        if (!policy) {
+            return res.status(404).json({ message: "Privacy Policy not found" });
+        }
+        res.status(200).json({ privacyPolicy: policy.content });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching Privacy Policy", error });
+    }
+});
+
+app.post("/add-privacy-policy", async (req, res) => {
+    const { content } = req.body;
+    try {
+        let policy = await PrivacyPolicy.findOne();
+        if (policy) {
+            policy.content = content;
+            policy.updatedAt = Date.now();
+        } else {
+            policy = new PrivacyPolicy({ content });
+        }
+        await policy.save();
+        res.status(200).json({ message: "Privacy Policy saved successfully!", policy });
+    } catch (error) {
+        res.status(500).json({ message: "Error saving Privacy Policy", error });
+        console.log("Error: ", error);
+    }
+});
+
+app.get("/get-terms-and-conditions", async (req, res) => {
+    try {
+        const conditions = await TermsNConditions.findOne();
+        if (!conditions) {
+            return res.status(404).json({ message: "Terms and Conditions not found" });
+        }
+        res.status(200).json({ termsNConditions: conditions.content });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching Privacy Policy", error });
+    }
+});
+
+app.post("/add-terms-and-conditions", async (req, res) => {
+    const { content } = req.body;
+    try {
+        let conditions = await TermsNConditions.findOne();
+        if (conditions) {
+            conditions.content = content;
+            conditions.updatedAt = Date.now();
+        } else {
+            conditions = new TermsNConditions({ content });
+        }
+        await conditions.save();
+        res.status(200).json({ message: "Privacy Policy saved successfully!", conditions });
+    } catch (error) {
+        res.status(500).json({ message: "Error saving Privacy Policy", error });
+        console.log("Error: ", error);
+    }
+});
+
+app.get("/get-about-us", async (req, res) => {
+    try {
+        const aboutUs = await AboutUs.findOne();
+        if (!aboutUs) {
+            return res.status(404).json({ message: "About Us not found" });
+        }
+        res.status(200).json({ aboutUs: aboutUs.content });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching About Us", error });
+    }
+});
+
+app.post("/add-about-us", async (req, res) => {
+    const { content } = req.body;
+    try {
+        let aboutUs = await AboutUs.findOne();
+        if (aboutUs) {
+            aboutUs.content = content;
+            aboutUs.updatedAt = Date.now();
+        } else {
+            aboutUs = new AboutUs({ content });
+        }
+        await aboutUs.save();
+        res.status(200).json({ message: "About Us saved successfully!", aboutUs });
+    } catch (error) {
+        res.status(500).json({ message: "Error saving About Us", error });
+        console.log("Error: ", error);
     }
 });
 

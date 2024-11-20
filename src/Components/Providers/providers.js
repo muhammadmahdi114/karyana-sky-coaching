@@ -548,15 +548,6 @@ export default function Providers() {
                                                     </option>
                                                 ))}
                                             </select>
-
-                                            {/* <input
-                                                type="text"
-                                                name="providerType"
-                                                placeholder="Provider Type"
-                                                value={newServiceProvider.providerType}
-                                                onChange={handleServiceInputChange}
-                                                className="border border-gray-300 rounded-xl p-3 mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150"
-                                            /> */}
                                             <input
                                                 type="number"
                                                 name="phNumber"

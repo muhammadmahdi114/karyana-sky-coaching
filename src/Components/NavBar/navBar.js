@@ -9,6 +9,7 @@ export default function NavBar() {
 
     useEffect(() => {
         const currentPath = location.pathname;
+
         if (currentPath === "/dashboard") {
             setActiveSection("Dashboard");
             setProvShowSubMenu(false);
@@ -26,6 +27,16 @@ export default function NavBar() {
             setProvShowSubMenu(false);
         } else if (currentPath === "/faqs") {
             setActiveSection("FAQs");
+            setProvShowSubMenu(false);
+        } else if (currentPath === "/privacy-policy") {
+            setActiveSection("Privacy Policy");
+            setProvShowSubMenu(false);
+        } else if (currentPath === "/terms-and-conditions") {
+            setActiveSection("Terms and Conditions");
+            setProvShowSubMenu(false);
+        }
+        else if (currentPath === "/about-us") {
+            setActiveSection("About Us");
             setProvShowSubMenu(false);
         }
     }, [location]);
@@ -51,7 +62,7 @@ export default function NavBar() {
         },
         {
             id: 4,
-            name: "Services",  
+            name: "Services",
             activeIcon: "/activeServices.svg",
             inactiveIcon: "/inactiveServices.svg",
         },
@@ -67,8 +78,25 @@ export default function NavBar() {
             activeIcon: "/activeFAQ.svg",
             inactiveIcon: "/inactiveFAQ.svg",
         },
+        {
+            id: 7,
+            name: "Privacy Policy",
+            activeIcon: "/activeDoc.svg",
+            inactiveIcon: "/inactiveDoc.svg",
+        },
+        {
+            id: 8,
+            name: "Terms and Conditions",
+            activeIcon: "/activeDoc.svg",
+            inactiveIcon: "/inactiveDoc.svg",
+        },
+        {
+            id: 9,
+            name: "About Us",
+            activeIcon: "/activeDoc.svg",
+            inactiveIcon: "/inactiveDoc.svg",
+        },
     ];
-
 
     const provSubMenuItems = [
         { id: 1, name: "Providers", nav: "providers" },
@@ -82,10 +110,11 @@ export default function NavBar() {
             setProvShowSubMenu(true);
         } else {
             setProvShowSubMenu(false);
-            navigate(`/${itemName.toLowerCase().replace(" ", "-")}`);            
+
+            const formattedRoute = itemName.toLowerCase().replace(/ /g, "-");
+            navigate(`/${formattedRoute}`);
         }
     };
-
 
     const handleSubItemClick = (subItemNav) => {
         setActiveSection("Providers");
@@ -100,13 +129,15 @@ export default function NavBar() {
                     <button
                         onClick={() => handleMainItemClick(item.name)}
                         className={`flex items-center gap-x-2 px-6 py-2 w-full ${item.name === activeSection ||
-                                (item.name === "Providers" && provShowSubMenu) ? 'border-l-4 border-primary bg-gray-50' : ''
-                            }`}
+                            (item.name === "Providers" && provShowSubMenu)
+                            ? "border-l-4 border-primary bg-gray-50"
+                            : ""
+                        }`}
                     >
                         <img
                             src={
                                 item.name === activeSection ||
-                                    (item.name === "Providers" && provShowSubMenu)
+                                (item.name === "Providers" && provShowSubMenu)
                                     ? item.activeIcon
                                     : item.inactiveIcon
                             }
@@ -121,10 +152,14 @@ export default function NavBar() {
                                 <button
                                     key={subItem.id}
                                     onClick={() => handleSubItemClick(subItem.nav)}
-                                    className={`flex items-center gap-x-2 px-6 py-2 w-full ${`/${subItem.nav}` === location.pathname ? 'border-l-4 -ml-4 border-primary bg-gray-50' : ''
-                                        }`}
+                                    className={`flex items-center gap-x-2 px-6 py-2 w-full ${`/${subItem.nav}` === location.pathname
+                                        ? "border-l-4 -ml-4 border-primary bg-gray-50"
+                                        : ""
+                                    }`}
                                 >
-                                    <p className="font-bold"> &gt; <span className="font-normal ml-1">{subItem.name}</span></p>
+                                    <p className="font-bold">
+                                        &gt; <span className="font-normal ml-1">{subItem.name}</span>
+                                    </p>
                                 </button>
                             ))}
                         </div>
