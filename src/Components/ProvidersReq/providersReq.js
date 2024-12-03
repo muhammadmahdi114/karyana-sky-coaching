@@ -50,7 +50,7 @@ export default function ProvidersReq() {
         <>
             <NavBar />
             <Header />
-            <div className="ml-60 h-screen bg-gray-100 px-8 py-5">
+            <div className="min-h-screen ml-60 bg-gray-100 px-8 py-5">
                 <div className="flex w-full justify-between">
                     <h1 className="font-bold text-2xl my-6">Providers Requests</h1>
                     <div className="flex gap-x-5 justify-center items-center">

@@ -61,7 +61,7 @@ export default function Dashboard() {
         <>
             <NavBar />
             <Header />
-            <div className="h-screen ml-60 bg-gray-100 px-8 py-5">
+            <div className="min-h-screen ml-60 bg-gray-100 px-8 py-5">
                 <h1 className="font-bold text-3xl my-6">Dashboard</h1>
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
                     {cards.map(card => (

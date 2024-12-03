@@ -86,7 +86,7 @@ export default function Coupons() {
         <>
             <NavBar />
             <Header />
-            <div className="h-screen ml-60 bg-gray-100 px-8 py-5">
+            <div className="min-h-screen ml-60 bg-gray-100 px-8 py-5">
                 <div className="mt-4">
                     <div>
                         <div className="flex w-full justify-between">

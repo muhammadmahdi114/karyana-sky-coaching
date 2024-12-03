@@ -13,6 +13,7 @@ const Admin = require('./src/Models/admin');
 const PrivacyPolicy = require("./src/Models/privacyPolicy");
 const TermsNConditions = require('./src/Models/termsNConditions');
 const AboutUs = require('./src/Models/aboutUs');
+const BookingsReq = require('./src/Models/bookingsReq');
 
 require('dotenv').config();
 
@@ -314,7 +315,6 @@ app.post("/add-privacy-policy", async (req, res) => {
         res.status(200).json({ message: "Privacy Policy saved successfully!", policy });
     } catch (error) {
         res.status(500).json({ message: "Error saving Privacy Policy", error });
-        console.log("Error: ", error);
     }
 });
 
@@ -344,7 +344,6 @@ app.post("/add-terms-and-conditions", async (req, res) => {
         res.status(200).json({ message: "Privacy Policy saved successfully!", conditions });
     } catch (error) {
         res.status(500).json({ message: "Error saving Privacy Policy", error });
-        console.log("Error: ", error);
     }
 });
 
@@ -374,9 +373,152 @@ app.post("/add-about-us", async (req, res) => {
         res.status(200).json({ message: "About Us saved successfully!", aboutUs });
     } catch (error) {
         res.status(500).json({ message: "Error saving About Us", error });
-        console.log("Error: ", error);
     }
 });
+
+app.get('/latest-booking-id', async (req, res) => {
+    try {
+        const latestBooking = await BookingsReq.findOne().sort({ bookingId: -1 });
+        const latestBookingId = latestBooking ? latestBooking.bookingId : 0;
+        res.status(200).json({ latestBookingId });
+    } catch (error) {
+        console.error('Error fetching latest booking ID:', error);
+        res.status(500).json({ message: 'Error fetching latest booking ID' });
+    }
+});
+
+app.get('/get-bookings-req', async (req, res) => {
+    try {
+        const bookingsReq = await BookingsReq.find()
+            .populate('customerId', 'name phNumber')
+            .populate('providerId', 'name phNumber')
+            .exec();
+
+        res.status(200).json(bookingsReq);
+    } catch (error) {
+        console.error('Error fetching bookings:', error);
+        res.status(500).json({ message: 'Error fetching bookings' });
+    }
+});
+
+app.post('/add-bookings-req', async (req, res) => {
+    try {
+        const { bookingId, customerId, providerId, scheduleDate, totalAmount, paymentStatus } = req.body;
+        const newBooking = new BookingsReq({
+            bookingId,
+            customerId,
+            providerId,
+            scheduleDate,
+            totalAmount,
+            paymentStatus,
+            bookingDate: new Date(),
+            updatedAt: new Date(),
+        });
+
+        await newBooking.save();
+        res.status(200).json({ message: 'Booking request created successfully', booking: newBooking });
+    } catch (error) {
+        console.error('Error creating booking:', error);
+        res.status(500).json({ message: 'Error creating booking request' });
+    }
+});
+
+app.get('/get-booking-details/:bookingId', async (req, res) => {
+    try {
+        const { bookingId } = req.params;
+        const bookingDetails = await BookingsReq.findOne({ bookingId: bookingId })
+            .populate('customerId', 'name phNumber image')
+            .populate('providerId', 'name phNumber image')
+            .exec();
+
+        if (!bookingDetails) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+        res.status(200).json(bookingDetails);
+    } catch (error) {
+        console.error('Error fetching booking details:', error);
+        res.status(500).json({ message: 'Error fetching booking details' });
+    }
+});
+
+app.put('/update-payment-status/:bookingId', async (req, res) => {
+    try {
+        const { bookingId } = req.params;
+        const { paymentStatus } = req.body;
+
+        if (!["Paid", "Unpaid"].includes(paymentStatus)) {
+            return res.status(400).json({ message: 'Invalid payment status' });
+        }
+
+        const updatedBooking = await BookingsReq.findOneAndUpdate(
+            { bookingId: bookingId },
+            { paymentStatus, updatedAt: new Date() },
+            { new: true }
+        );
+
+        if (!updatedBooking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        res.status(200).json({ message: 'Payment status updated successfully', booking: updatedBooking });
+    } catch (error) {
+        console.error('Error updating payment status:', error);
+        res.status(500).json({ message: 'Error updating payment status' });
+    }
+});
+
+app.put('/update-schedule-date/:bookingId', async (req, res) => {
+    try {
+        const { bookingId } = req.params;
+        const { scheduleDate } = req.body;
+
+        if (!scheduleDate) {
+            return res.status(400).json({ message: 'Schedule date is required' });
+        }
+
+        const updatedBooking = await BookingsReq.findOneAndUpdate(
+            { bookingId: bookingId },
+            { scheduleDate, updatedAt: new Date() },
+            { new: true }
+        );
+
+        if (!updatedBooking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        res.status(200).json({ message: 'Schedule date updated successfully', booking: updatedBooking });
+    } catch (error) {
+        console.error('Error updating schedule date:', error);
+        res.status(500).json({ message: 'Error updating schedule date' });
+    }
+});
+
+app.put('/assign-provider/:bookingId', async (req, res) => {
+    try {
+        const { bookingId } = req.params;
+        const { providerId } = req.body;
+
+        if (!providerId) {
+            return res.status(400).json({ message: 'Provider ID is required' });
+        }
+
+        const updatedBooking = await BookingsReq.findOneAndUpdate(
+            { bookingId: bookingId },
+            { providerId, updatedAt: new Date() },
+            { new: true }
+        );
+
+        if (!updatedBooking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        res.status(200).json({ message: 'Provider assigned successfully', booking: updatedBooking });
+    } catch (error) {
+        console.error('Error assigning provider:', error);
+        res.status(500).json({ message: 'Error assigning provider' });
+    }
+});
+
 
 app.listen(8000, () => {
     console.log("Server is running on port 8000");

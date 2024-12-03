@@ -12,6 +12,9 @@ import FAQs from './Components/FAQs/faqs';
 import PrivacyPolicy from './Components/PrivacyPolicy/privacyPolicy';
 import TermsNCondtion from './Components/TermsNConditions/termsNCondition';
 import AboutUs from './Components/AboutUs/aboutUs';
+import Users from './Components/Users/users';
+import BookingsReq from './Components/BookingsReq/bookingsReq';
+import BookingReqDetails from './Components/BookingsReqDetails/bookingsReqDetails';
 
 function App() {
   useEffect(() => {
@@ -33,6 +36,9 @@ function App() {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-and-conditions" element={<TermsNCondtion />} />
         <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/bookings-req" element={<BookingsReq />} />
+        <Route path="/booking-details/:bookingId" element={<BookingReqDetails />} />
       </Routes>
     </Router>
   );

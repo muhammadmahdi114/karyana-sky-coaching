@@ -80,7 +80,7 @@ export default function ProvidersType() {
         <>
             <NavBar />
             <Header />
-            <div className="ml-60 h-screen bg-gray-100 px-8 py-5">
+            <div className="min-h-screen ml-60 bg-gray-100 px-8 py-5">
                 <h1 className="font-bold text-2xl my-6">Providers Type</h1>
                 <div className="flex w-full justify-end items-center space-x-3 mb-2">
                     <div className="flex px-2 py-4 rounded-xl bg-white space-x-2">

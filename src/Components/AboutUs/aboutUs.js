@@ -44,7 +44,7 @@ export default function AboutUs() {
         <>
             <NavBar />
             <Header />
-            <div className="h-screen ml-60 bg-gray-100 px-8 py-5">
+            <div className="min-h-screen ml-60 bg-gray-100 px-8 py-5">
                 <div className="flex w-full justify-between items-center">
                     <h1 className="font-bold text-2xl my-6">About US</h1>
                     <button
