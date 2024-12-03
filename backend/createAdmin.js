@@ -12,7 +12,7 @@ async function createAdmin() {
             return;
         }
 
-        const response = await axios.post(`${import.meta.env.backend_baseUrl}/register-admin`, {
+        const response = await axios.post(`http://localhost:8000/register-admin`, {
             name,
             email,
             password,

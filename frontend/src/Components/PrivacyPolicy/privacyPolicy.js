@@ -12,7 +12,7 @@ export default function PrivacyPolicy() {
     useEffect(() => {
         const fetchContent = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.backend_baseUrl}/get-privacy-policy`);
+                const response = await axios.get(`http://localhost:8000/get-privacy-policy`);
                 setEditorContent(response.data.privacyPolicy);
             } catch (error) {
                 console.error('Error fetching privacy policy:', error);
@@ -23,7 +23,7 @@ export default function PrivacyPolicy() {
 
     const handleSave = async () => {
         try {
-            const response = await axios.post(`${import.meta.env.backend_baseUrl}/add-privacy-policy`, {
+            const response = await axios.post(`http://localhost:8000/add-privacy-policy`, {
                 content: editorContent,
             });
 

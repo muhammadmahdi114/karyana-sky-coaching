@@ -17,7 +17,7 @@ const BookingReqDetails = () => {
     useEffect(() => {
         const fetchBookingDetails = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.backend_baseUrl}/get-booking-details/${bookingId}`);
+                const response = await axios.get(`http://localhost:8000/get-booking-details/${bookingId}`);
                 setBookingDetails(response.data);
                 setPaymentStatus(response.data.paymentStatus);
                 setScheduleDate(response.data.scheduleDate);
@@ -34,7 +34,7 @@ const BookingReqDetails = () => {
     useEffect(() => {
         const fetchProviders = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.backend_baseUrl}/get-providers`);
+                const response = await axios.get(`http://localhost:8000/get-providers`);
                 setProviders(response.data);
             } catch (error) {
                 console.error('Error fetching providers:', error);
@@ -64,7 +64,7 @@ const BookingReqDetails = () => {
 
     const handlePaymentStatusChange = async (status) => {
         try {
-            await axios.put(`${import.meta.env.backend_baseUrl}/update-payment-status/${bookingId}`, {
+            await axios.put(`http://localhost:8000/update-payment-status/${bookingId}`, {
                 paymentStatus: status,
             });
             setPaymentStatus(status);
@@ -76,7 +76,7 @@ const BookingReqDetails = () => {
 
     const handleScheduleDateChange = async (newDate) => {
         try {
-            await axios.put(`${import.meta.env.backend_baseUrl}/update-schedule-date/${bookingId}`, {
+            await axios.put(`http://localhost:8000/update-schedule-date/${bookingId}`, {
                 scheduleDate: newDate,
             });
             setScheduleDate(newDate);
@@ -87,7 +87,7 @@ const BookingReqDetails = () => {
 
     const handleAssignProvider = async () => {
         try {
-            await axios.put(`${import.meta.env.backend_baseUrl}/assign-provider/${bookingId}`, {
+            await axios.put(`http://localhost:8000/assign-provider/${bookingId}`, {
                 providerId: provider,
             });
             alert('Provider assigned successfully');

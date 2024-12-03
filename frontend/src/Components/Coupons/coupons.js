@@ -20,7 +20,7 @@ export default function Coupons() {
     useEffect(() => {
         const fetchCoupons = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.backend_baseUrl}/get-coupons`);
+                const response = await axios.get(`http://localhost:8000/get-coupons`);
                 setCouponList(response.data);
             } catch (error) {
                 console.error('Error fetching coupons:', error);
@@ -45,7 +45,7 @@ export default function Coupons() {
         };
 
         try {
-            const response = await axios.post(`${import.meta.env.backend_baseUrl}/add-coupons`, newCouponData, {
+            const response = await axios.post(`http://localhost:8000/add-coupons`, newCouponData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

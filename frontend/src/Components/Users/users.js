@@ -23,7 +23,7 @@ export default function Users() {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.backend_baseUrl}/get-users`);
+                const response = await axios.get(`http://localhost:8000/get-users`);
                 console.log('Fetched users:', response.data);
                 setUserList(response.data);
             } catch (error) {
@@ -50,7 +50,7 @@ export default function Users() {
         console.log("New User Data:", newUserData);
 
         try {
-            const response = await axios.post(`${import.meta.env.backend_baseUrl}/add-users`, newUserData, {
+            const response = await axios.post(`http://localhost:8000/add-users`, newUserData, {
                 headers: {
                     "Content-Type": "application/json",
                 },

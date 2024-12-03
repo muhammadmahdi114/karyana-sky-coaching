@@ -18,7 +18,7 @@ export default function Login() {
                 return;
             }
 
-            const response = await axios.post(`${import.meta.env.backend_baseUrl}/login`, {
+            const response = await axios.post(`http://localhost:8000/login`, {
                 email,
                 password,
             });

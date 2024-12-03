@@ -21,7 +21,7 @@ export default function Categories() {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.backend_baseUrl}/get-categories`);
+                const response = await axios.get(`http://localhost:8000/get-categories`);
                 setCategoryList(response.data);
             } catch (error) {
                 console.error('Error fetching categories:', error);
@@ -47,7 +47,7 @@ export default function Categories() {
         };
 
         try {
-            const response = await axios.post(`${import.meta.env.backend_baseUrl}/add-categories`, newCategoryData, {
+            const response = await axios.post(`http://localhost:8000/add-categories`, newCategoryData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
