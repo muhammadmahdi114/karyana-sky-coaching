@@ -18,7 +18,7 @@ export default function ProvidersType() {
     useEffect(() => {
         const fetchProviderTypes = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-provider-types`);
+                const response = await axios.get(`https://karyana-backend.vercel.app/get-provider-types`);
                 setProviderTypeList(response.data);
             } catch (error) {
                 console.error('Error fetching provider types:', error);
@@ -45,7 +45,7 @@ export default function ProvidersType() {
         };
 
         try {
-            const response = await axios.post(`http://localhost:8000/add-provider-types`, newProviderTypeData, {
+            const response = await axios.post(`https://karyana-backend.vercel.app/add-provider-types`, newProviderTypeData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

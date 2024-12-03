@@ -12,7 +12,7 @@ export default function PrivacyPolicy() {
     useEffect(() => {
         const fetchContent = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-privacy-policy`);
+                const response = await axios.get(`https://karyana-backend.vercel.app/get-privacy-policy`);
                 setEditorContent(response.data.privacyPolicy);
             } catch (error) {
                 console.error('Error fetching privacy policy:', error);
@@ -23,7 +23,7 @@ export default function PrivacyPolicy() {
 
     const handleSave = async () => {
         try {
-            const response = await axios.post(`http://localhost:8000/add-privacy-policy`, {
+            const response = await axios.post(`https://karyana-backend.vercel.app/add-privacy-policy`, {
                 content: editorContent,
             });
 

@@ -21,7 +21,7 @@ export default function Categories() {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-categories`);
+                const response = await axios.get(`https://karyana-backend.vercel.app/get-categories`);
                 setCategoryList(response.data);
             } catch (error) {
                 console.error('Error fetching categories:', error);
@@ -47,7 +47,7 @@ export default function Categories() {
         };
 
         try {
-            const response = await axios.post(`http://localhost:8000/add-categories`, newCategoryData, {
+            const response = await axios.post(`https://karyana-backend.vercel.app/add-categories`, newCategoryData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

@@ -12,7 +12,7 @@ export default function TermsNConditions() {
     useEffect(() => {
         const fetchContent = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-terms-and-conditions`);
+                const response = await axios.get(`https://karyana-backend.vercel.app/get-terms-and-conditions`);
                 setEditorContent(response.data.termsNConditions);
             } catch (error) {
                 console.error('Error fetching privacy policy:', error);
@@ -23,7 +23,7 @@ export default function TermsNConditions() {
 
     const handleSave = async () => {
         try {
-            const response = await axios.post(`http://localhost:8000/add-terms-and-conditions`, {
+            const response = await axios.post(`https://karyana-backend.vercel.app/add-terms-and-conditions`, {
                 content: editorContent,
             });
 

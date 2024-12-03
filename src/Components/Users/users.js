@@ -23,7 +23,7 @@ export default function Users() {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-users`);
+                const response = await axios.get(`https://karyana-backend.vercel.app/get-users`);
                 console.log('Fetched users:', response.data);
                 setUserList(response.data);
             } catch (error) {
@@ -50,7 +50,7 @@ export default function Users() {
         console.log("New User Data:", newUserData);
 
         try {
-            const response = await axios.post(`http://localhost:8000/add-users`, newUserData, {
+            const response = await axios.post(`https://karyana-backend.vercel.app/add-users`, newUserData, {
                 headers: {
                     "Content-Type": "application/json",
                 },

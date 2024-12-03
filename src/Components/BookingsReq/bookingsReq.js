@@ -16,7 +16,7 @@ export default function BookingsReq() {
     useEffect(() => {
         const fetchBookings = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-bookings-req`);
+                const response = await axios.get(`https://karyana-backend.vercel.app/get-bookings-req`);
                 setBookingList(response.data);                
             } catch (error) {
                 console.error('Error fetching bookings:', error);
@@ -25,8 +25,8 @@ export default function BookingsReq() {
 
         const fetchUsersAndProviders = async () => {
             try {
-                const usersResponse = await axios.get(`http://localhost:8000/get-users`);
-                const providersResponse = await axios.get(`http://localhost:8000/get-providers`);
+                const usersResponse = await axios.get(`https://karyana-backend.vercel.app/get-users`);
+                const providersResponse = await axios.get(`https://karyana-backend.vercel.app/get-providers`);
                 setCustomers(usersResponse.data);
                 setProviders(providersResponse.data);
                 console.log("User: ", usersResponse.data);
@@ -47,7 +47,7 @@ export default function BookingsReq() {
 
     const handleAddBooking = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/latest-booking-id`);
+            const response = await axios.get(`https://karyana-backend.vercel.app/latest-booking-id`);
             const latestBookingId = response.data.latestBookingId;
 
             const newBookingId = latestBookingId + 1;
@@ -62,7 +62,7 @@ export default function BookingsReq() {
                 paymentStatus: 'Unpaid',
             };
 
-            await axios.post(`http://localhost:8000/add-bookings-req`, newBooking);
+            await axios.post(`https://karyana-backend.vercel.app/add-bookings-req`, newBooking);
             alert('Booking request created successfully!');
         } catch (error) {
             console.error('Error adding booking request:', error);

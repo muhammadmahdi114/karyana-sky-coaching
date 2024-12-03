@@ -17,7 +17,7 @@ export default function FAQs() {
     useEffect(() => {
         const fetchFAQs = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-faqs`);
+                const response = await axios.get(`https://karyana-backend.vercel.app/get-faqs`);
                 setFaqList(response.data);
             } catch (error) {
                 console.error('Error fetching FAQs:', error);
@@ -41,7 +41,7 @@ export default function FAQs() {
     const handleAddFaq = async () => {
         const newFAQData = { ...newFAQ, updatedAt: new Date().toLocaleDateString("en-GB") };
         try {
-            const response = await axios.post(`http://localhost:8000/add-faqs`, newFAQData, {
+            const response = await axios.post(`https://karyana-backend.vercel.app/add-faqs`, newFAQData, {
                 headers: { 'Content-Type': 'application/json', },
             });
             setFaqList([...faqList, response.data]);

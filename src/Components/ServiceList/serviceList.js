@@ -24,7 +24,7 @@ export default function ServiceList() {
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-services`);
+                const response = await axios.get(`https://karyana-backend.vercel.app/get-services`);
                 setServiceList(response.data);
             } catch (error) {
                 console.error('Error fetching services:', error);
@@ -33,7 +33,7 @@ export default function ServiceList() {
 
         const fetchProviders = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-providers`);
+                const response = await axios.get(`https://karyana-backend.vercel.app/get-providers`);
                 setProviders(response.data);
             } catch (error) {
                 console.error('Error fetching providers:', error);
@@ -42,7 +42,7 @@ export default function ServiceList() {
 
         const fetchCategories = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-categories`);
+                const response = await axios.get(`https://karyana-backend.vercel.app/get-categories`);
                 setCategories(response.data);
             } catch (error) {
                 console.error('Error fetching providers:', error);
@@ -72,7 +72,7 @@ export default function ServiceList() {
         console.log("New Service DATA: ", newServiceData);
 
         try {
-            const response = await axios.post(`http://localhost:8000/add-services`, newServiceData, {
+            const response = await axios.post(`https://karyana-backend.vercel.app/add-services`, newServiceData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

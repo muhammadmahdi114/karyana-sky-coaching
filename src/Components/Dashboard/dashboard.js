@@ -13,7 +13,7 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchMetrics = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-dashboard-metrics`);
+                const response = await axios.get(`https://karyana-backend.vercel.app/get-dashboard-metrics`);
                 const { totalUsers, totalServiceProviders, totalCategories } = response.data;
 
                 setTotalUsers(totalUsers);

@@ -25,7 +25,7 @@ export default function Providers() {
 
         const fetchProviders = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-providers`);
+                const response = await axios.get(`https://karyana-backend.vercel.app/get-providers`);
                 console.log('Fetched Serive Providers:', response.data);
                 setProviderList(response.data);
             } catch (error) {
@@ -35,7 +35,7 @@ export default function Providers() {
 
         const fetchProviderTypes = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-provider-types`);
+                const response = await axios.get(`https://karyana-backend.vercel.app/get-provider-types`);
                 setProviderTypes(response.data);
             } catch (error) {
                 console.error('Error fetching provider types:', error);
@@ -61,7 +61,7 @@ export default function Providers() {
         };
         console.log("New Service Provider Data:", newServiceProviderData);
         try {
-            const response = await axios.post(`http://localhost:8000/add-providers`, newServiceProviderData, {
+            const response = await axios.post(`https://karyana-backend.vercel.app/add-providers`, newServiceProviderData, {
                 headers: { "Content-Type": "application/json" },
             });
 

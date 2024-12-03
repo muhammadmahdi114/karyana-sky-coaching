@@ -12,7 +12,7 @@ export default function AboutUs() {
     useEffect(() => {
         const fetchContent = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-about-us`);
+                const response = await axios.get(`https://karyana-backend.vercel.app/get-about-us`);
                 setEditorContent(response.data.aboutUs);
             } catch (error) {
                 console.error('Error fetching About us:', error);
@@ -23,7 +23,7 @@ export default function AboutUs() {
 
     const handleSave = async () => {
         try {
-            const response = await axios.post(`http://localhost:8000/add-about-us`, {
+            const response = await axios.post(`https://karyana-backend.vercel.app/add-about-us`, {
                 content: editorContent,
             });
 
