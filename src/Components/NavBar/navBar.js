@@ -165,94 +165,94 @@ export default function NavBar() {
     };
 
     return (
-        <div className="fixed left-0 top-0 bg-white w-60 h-screen flex flex-col">
-            <h1 className="text-2xl text-primary font-krona font-bold border-b p-6 mb-5">Karyana</h1>
-            {menuItems.map((item) => (
-                <div key={item.id} className="my-2">
-                    <button
-                        onClick={() => handleMainItemClick(item.name)}
-                        className={`flex items-center gap-x-2 px-6 py-2 w-full ${item.name === activeSection ||
-                            (item.name === "Providers" && provShowSubMenu) ||
-                            (item.name === "Bookings" && bookingsShowSubMenu)
-                            ? "border-l-4 border-primary bg-gray-50"
-                            : ""
+        <div className="fixed left-0 top-0 bg-white w-60 min-h-screen flex flex-col overflow-y-auto">
+        <h1 className="text-2xl text-primary font-krona font-bold border-b p-6 mb-5">Karyana</h1>
+        {menuItems.map((item) => (
+            <div key={item.id} className="my-2">
+                <button
+                    onClick={() => handleMainItemClick(item.name)}
+                    className={`flex items-center text-sm gap-x-2 px-6 py-2 w-full ${item.name === activeSection ||
+                        (item.name === "Providers" && provShowSubMenu) ||
+                        (item.name === "Bookings" && bookingsShowSubMenu)
+                        ? "border-l-4 border-primary bg-gray-50"
+                        : ""
+                    }`}
+                >
+                    <img
+                        src={
+                            item.name === activeSection ||
+                                (item.name === "Providers" && provShowSubMenu) ||
+                                (item.name === "Bookings" && bookingsShowSubMenu)
+                                ? item.activeIcon
+                                : item.inactiveIcon
+                        }
+                        alt={item.name}
+                    />
+                    <span>{item.name}</span>
+                    {/* Dropdown Icon */}
+                    {(item.name === "Providers" || item.name === "Bookings") && (
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className={`w-4 h-4 ml-2 transition-transform ${item.name === "Providers" && provShowSubMenu
+                                ? "transform rotate-180"
+                                : item.name === "Bookings" && bookingsShowSubMenu
+                                ? "transform rotate-180"
+                                : ""
                             }`}
-                    >
-                        <img
-                            src={
-                                item.name === activeSection ||
-                                    (item.name === "Providers" && provShowSubMenu) ||
-                                    (item.name === "Bookings" && bookingsShowSubMenu)
-                                    ? item.activeIcon
-                                    : item.inactiveIcon
-                            }
-                            alt={item.name}
-                        />
-                        <span>{item.name}</span>
-                        {/* Dropdown Icon */}
-                        {(item.name === "Providers" || item.name === "Bookings") && (
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className={`w-4 h-4 ml-2 transition-transform ${item.name === "Providers" && provShowSubMenu
-                                    ? "transform rotate-180"
-                                    : item.name === "Bookings" && bookingsShowSubMenu
-                                    ? "transform rotate-180"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            aria-hidden="true"
+                        >
+                            <path
+                                fillRule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clipRule="evenodd"
+                            />
+                        </svg>
+                    )}
+                </button>
+    
+                {/* Providers Sub Menu */}
+                {item.name === "Providers" && provShowSubMenu && (
+                    <div className="py-2 space-y-2 pl-4">
+                        {provSubMenuItems.map((subItem) => (
+                            <button
+                                key={subItem.id}
+                                onClick={() => handleSubItemClick(subItem.nav)}
+                                className={`flex items-center text-sm gap-x-2 px-6 py-2 w-full ${`/${subItem.nav}` === location.pathname
+                                    ? "border-l-4 -ml-4 border-primary bg-gray-50"
                                     : ""
-                                    }`}
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                aria-hidden="true"
+                                }`}
                             >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        )}
-                    </button>
-
-                    {/* Providers Sub Menu */}
-                    {item.name === "Providers" && provShowSubMenu && (
-                        <div className="py-2 space-y-2 pl-4">
-                            {provSubMenuItems.map((subItem) => (
-                                <button
-                                    key={subItem.id}
-                                    onClick={() => handleSubItemClick(subItem.nav)}
-                                    className={`flex items-center gap-x-2 px-6 py-2 w-full ${`/${subItem.nav}` === location.pathname
-                                        ? "border-l-4 -ml-4 border-primary bg-gray-50"
-                                        : ""
-                                        }`}
-                                >
-                                    <p className="font-bold">
-                                        &gt; <span className="font-normal ml-1">{subItem.name}</span>
-                                    </p>
-                                </button>
-                            ))}
-                        </div>
-                    )}
-
-                    {/* Bookings Sub Menu */}
-                    {item.name === "Bookings" && bookingsShowSubMenu && (
-                        <div className="py-2 space-y-2 pl-4">
-                            {bookingsSubMenuItems.map((subItem) => (
-                                <button
-                                    key={subItem.id}
-                                    onClick={() => handleBookingsSubItemClick(subItem.nav)}
-                                    className={`flex items-center gap-x-2 px-6 py-2 w-full ${`/${subItem.nav}` === location.pathname
-                                        ? "border-l-4 -ml-4 border-primary bg-gray-50"
-                                        : ""
-                                        }`}
-                                >
-                                    <p className="font-bold">
-                                        &gt; <span className="font-normal ml-1">{subItem.name}</span>
-                                    </p>
-                                </button>
-                            ))}
-                        </div>
-                    )}
-                </div>
-            ))}
-        </div>
+                                <p className="font-bold">
+                                    &gt; <span className="font-normal ml-1">{subItem.name}</span>
+                                </p>
+                            </button>
+                        ))}
+                    </div>
+                )}
+    
+                {/* Bookings Sub Menu */}
+                {item.name === "Bookings" && bookingsShowSubMenu && (
+                    <div className="py-2 space-y-2 pl-4">
+                        {bookingsSubMenuItems.map((subItem) => (
+                            <button
+                                key={subItem.id}
+                                onClick={() => handleBookingsSubItemClick(subItem.nav)}
+                                className={`flex items-center text-sm gap-x-2 px-6 py-2 w-full ${`/${subItem.nav}` === location.pathname
+                                    ? "border-l-4 -ml-4 border-primary bg-gray-50"
+                                    : ""
+                                }`}
+                            >
+                                <p className="font-bold">
+                                    &gt; <span className="font-normal ml-1">{subItem.name}</span>
+                                </p>
+                            </button>
+                        ))}
+                    </div>
+                )}
+            </div>
+        ))}
+    </div>    
     );
 }

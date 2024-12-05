@@ -132,7 +132,7 @@ export default function Users() {
                     </div>
                 </div>
                 <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white border border-gray-200">
+                    <table className="min-w-full text-xs">
                         <thead>
                             <tr className="text-gray-500 font-semibold text-left">
                                 <th className="py-4 px-6">Name</th>
@@ -144,7 +144,7 @@ export default function Users() {
                                 <th className="py-4 px-6"></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className=" bg-white border border-gray-200">
                             {filteredUsers.map((user) => (
                                 <tr key={user.id} className="border-t hover:bg-gray-100">
                                     <td className="py-4 px-6 flex items-center">

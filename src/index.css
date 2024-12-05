@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@font-face {
+    font-family: 'Karyana Font';
+    src: url('./Assets/Fonts/Karyana Font.woff2') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}

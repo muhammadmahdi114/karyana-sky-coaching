@@ -221,8 +221,8 @@ export default function Categories() {
                             </div>
                         )}
                         <div className="overflow-x-auto">
-                            <table className="min-w-full bg-white border border-gray-200">
-                                <thead>
+                        <table className="min-w-full text-xs">
+                        <thead>
                                     <tr className="text-gray-500 font-semibold text-left">
                                         <th className="py-4 px-6 text-center">Image</th>
                                         <th className="py-4 px-6 text-center">Name</th>
@@ -234,8 +234,8 @@ export default function Categories() {
                                         <th className="py-4 px-6 text-center"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {filteredCategories.map((category) => (
+                                <tbody className=" bg-white border border-gray-200">
+                                {filteredCategories.map((category) => (
                                         <tr key={category.id} className="border-t hover:bg-gray-100">
                                             <td className="py-4 px-6 flex justify-center items-center">
                                                 <img

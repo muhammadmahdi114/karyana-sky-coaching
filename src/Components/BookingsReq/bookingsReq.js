@@ -17,7 +17,7 @@ export default function BookingsReq() {
         const fetchBookings = async () => {
             try {
                 const response = await axios.get(`https://karyana-backend.vercel.app/get-bookings-req`);
-                setBookingList(response.data);                
+                setBookingList(response.data);
             } catch (error) {
                 console.error('Error fetching bookings:', error);
             }
@@ -145,7 +145,7 @@ export default function BookingsReq() {
                         </div>
 
                         <div className="overflow-x-auto mt-8">
-                            <table className="min-w-full bg-white border border-gray-200">
+                            <table className="min-w-full text-xs">
                                 <thead>
                                     <tr className="text-gray-500 font-semibold text-left">
                                         <th className="py-4 px-6 text-center">Booking ID</th>
@@ -159,7 +159,7 @@ export default function BookingsReq() {
                                         <th className="py-4 px-6 text-center"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody className=" bg-white border border-gray-200">
                                     {bookingList.map((booking) => (
                                         <tr key={booking.bookingId} className="border-t hover:bg-gray-100">
                                             <td className="font-medium text-center">{booking.bookingId}</td>

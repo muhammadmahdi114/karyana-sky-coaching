@@ -12,6 +12,9 @@ module.exports = {
       fontFamily: {
         krona: ['"Krona One"', 'sans-serif'],
       },
+      fontFamily: {
+        sans: ['"Karyana Font"', 'sans-serif'], // Set default font
+      },
     },
   },
   plugins: [],

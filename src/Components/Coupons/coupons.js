@@ -184,7 +184,7 @@ export default function Coupons() {
                             </div>
                         )}
                         <div className="overflow-x-auto">
-                            <table className="min-w-full bg-white border border-gray-200">
+                            <table className="min-w-full text-xs">
                                 <thead>
                                     <tr className="text-gray-500 font-semibold text-left">
                                         <th className="py-4 px-6 text-center">Code</th>
@@ -196,7 +196,7 @@ export default function Coupons() {
                                         <th className="py-4 px-6 text-center"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody className=" bg-white border border-gray-200">
                                     {filteredCoupons.map((coupon) => (
                                         <tr key={coupon.id} className="border-t hover:bg-gray-100">
                                             <td className="font-medium text-center">{coupon.code}</td>

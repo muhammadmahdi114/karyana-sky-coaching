@@ -137,17 +137,17 @@ export default function FAQs() {
                         </div>
                     )}
                     <div className="overflow-x-auto">
-                        <table className="min-w-full bg-white border border-gray-200">
+                        <table className="min-w-full text-xs">
                             <thead>
-                                <tr className="text-gray-500 font-semibold text-left">
-                                    <th className="py-4 px-6 text-center">Question</th>
-                                    <th className="py-4 px-6 text-center">Answer</th>
+                                <tr className="text-gray-500 font-semibold">
+                                    <th className="py-4 px-6 text-start">Question</th>
+                                    <th className="py-4 px-6 text-start">Answer</th>
                                     <th className="py-4 px-6 text-center">FAQ Category</th>
                                     <th className="py-4 px-6 text-center">Updated At</th>
                                     <th className="py-4 px-6 text-center"></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody className=" bg-white border border-gray-200">
                                 {filteredFAQs.map((faq) => (
                                     <tr key={faq.id} className="border-t hover:bg-gray-100">
                                         <td className="pl-4 font-medium text-start">{faq.question}</td>

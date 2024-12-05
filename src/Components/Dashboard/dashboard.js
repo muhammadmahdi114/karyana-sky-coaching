@@ -67,7 +67,7 @@ export default function Dashboard() {
                     {cards.map(card => (
                         <div key={card.id} className="bg-white p-6 rounded-lg shadow-sm">
                             <h3 className="text-md">{card.title}</h3>
-                            <p className="text-2xl font-semibold mt-3">{card.number}</p>
+                            <p className="text-3xl font-semibold mt-3">{card.number}</p>
                         </div>
                     ))}
                 </div>

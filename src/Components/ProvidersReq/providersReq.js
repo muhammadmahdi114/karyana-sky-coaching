@@ -66,14 +66,12 @@ export default function ProvidersReq() {
                     </div>
                 </div>
                 <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white border border-gray-200">
+                    <table className="min-w-full text-xs">
                         <thead>
                             <tr className="text-gray-500 font-semibold text-left">
-                                <th className="py-4 px-6"></th>
-                                <th className="py-4 pr-6">Name</th>
+                                <th className="py-4 pr-6">Profile</th>
                                 <th className="py-4 px-6">Provider Type</th>
                                 <th className="py-4 px-6">Phone No</th>
-                                <th className="py-4 px-6">Mobile No</th>
                                 <th className="py-4 px-6">Addresses</th>
                                 <th className="py-4 px-6">Available Range</th>
                                 <th className="py-4 px-6">Taxes</th>
@@ -82,20 +80,27 @@ export default function ProvidersReq() {
                                 <th className="py-4 px-6"></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className=" bg-white border border-gray-200">
                             {filteredServiceProviders.map((provider) => (
                                 <tr key={provider.id} className="border-t hover:bg-gray-100">
-                                    <td className="py-4 px-6 flex items-center">
-                                        <img
-                                            src={provider.image}
-                                            alt={provider.name}
-                                            className="w-10 h-10 rounded-full mt-2 mr-10"
-                                        />
+
+                                    <td className="py-4 pr-6">
+                                        <div className="flex gap-x-3 items-center">
+                                            <div>
+                                                <img
+                                                    src={provider.image}
+                                                    alt={provider.name}
+                                                    className="w-10 h-10 rounded-full mt-2"
+                                                />
+                                            </div>
+                                            <div>
+                                                <div>{provider.name}</div>
+                                                <div className="text-gray-700">{provider.mobileNumber}</div>
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td className="py-4 pr-6">{provider.name}</td>
                                     <td className="py-4 px-6">{provider.providerType}</td>
                                     <td className="py-4 px-6">{provider.phNumber}</td>
-                                    <td className="py-4 px-6">{provider.mobileNumber}</td>
                                     <td className="py-4 px-6">{provider.addresses}</td>
                                     <td className="py-4 px-6">{provider.availableRange}</td>
                                     <td className="py-4 px-6">{provider.taxes}</td>
