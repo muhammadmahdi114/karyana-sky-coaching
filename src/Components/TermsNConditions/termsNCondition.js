@@ -45,8 +45,8 @@ export default function TermsNConditions() {
             <NavBar />
             <Header />
             <div className="h-full ml-60 bg-gray-100 px-8 py-5">
-                <div className="flex w-full justify-between items-center">
-                    <h1 className="font-bold text-2xl my-6">Terms and Conditions</h1>
+                <h1 className="font-bold text-2xl my-6">Terms and Conditions</h1>
+                <div className="flex w-full justify-end items-center">
                     <button
                         onClick={() => setEditContent(true)}
                         className="bg-[#89b8ff] text-primary flex gap-x-2 items-center h-14 px-4 py-2 rounded-xl"

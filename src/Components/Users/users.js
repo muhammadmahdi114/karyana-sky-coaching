@@ -102,8 +102,8 @@ export default function Users() {
             <NavBar />
             <Header />
             <div className="min-h-screen ml-60 bg-gray-100 px-8 py-5">
-                <div className="flex w-full justify-between">
-                    <h1 className="font-bold text-2xl my-6">Users</h1>
+                <h1 className="font-bold text-2xl my-6">Users</h1>
+                <div className="flex w-full justify-end">
                     <div className="flex gap-x-5 justify-center items-center">
                         <div className="flex px-1 py-1.5 rounded-xl bg-white space-x-2">
                             <img src="/Search.png" alt="Search" />

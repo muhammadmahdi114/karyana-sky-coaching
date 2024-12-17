@@ -127,8 +127,8 @@ export default function BookingsReq() {
             <div className="min-h-screen ml-60 bg-gray-100 px-8 py-5">
                 <div className="mt-4">
                     <div>
-                        <div className="flex w-full justify-between items-center">
-                            <h1 className="font-bold text-2xl my-6">Bookings</h1>
+                        <h1 className="font-bold text-2xl my-6">Bookings</h1>
+                        <div className="flex w-full justify-end items-center">
                             <button onClick={() => document.getElementById("addBookingForm").classList.toggle("hidden")} className="bg-[#89b8ff] h-9 rounded-xl flex items-center px-5 py-4 text-primary font-bold">
                                 <span className="text-2xl mb-1 mr-2">+</span>Add Booking Request
                             </button>

@@ -68,8 +68,8 @@ export default function FAQs() {
             <Header />
             <div className="min-h-screen ml-60 bg-gray-100 px-8 py-5">
                 <div className="mt-4">
-                    <div className="flex w-full justify-between">
-                        <h1 className="font-bold text-2xl my-6">FAQs</h1>
+                    <h1 className="font-bold text-2xl my-6">FAQs</h1>
+                    <div className="flex w-full justify-end">
                         <div className="flex gap-x-5 justify-center items-center">
                             <div className="flex px-2 py-4 rounded-xl bg-white space-x-2">
                                 <img src="/Search.png" alt="Search" />

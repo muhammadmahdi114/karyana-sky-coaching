@@ -130,9 +130,9 @@ export default function Providers() {
 
                 <div className="mt-4">
                     <div>
-                        <div className="flex w-full justify-between">
-                            <h1 className="font-bold text-xl my-6">Service Providers</h1>
-                            <div className="flex gap-x-5 text-sm justify-center items-center flex-wrap">
+                        <h1 className="font-bold text-xl my-6">Service Providers</h1>
+                        <div className="flex w-full justify-end">
+                            <div className="flex gap-x-3 text-sm justify-center items-center flex-wrap">
 
                                 <div className="flex px-1 py-1.5 rounded-xl bg-white space-x-3">
                                     <img src="/Search.png" alt="Search" className="ml-2" />

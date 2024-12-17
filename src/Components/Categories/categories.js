@@ -103,8 +103,8 @@ export default function Categories() {
             <div className="min-h-screen ml-60 bg-gray-100 px-8 py-5">
                 <div className="mt-4">
                     <div>
-                        <div className="flex w-full justify-between">
-                            <h1 className="font-bold text-2xl my-6">Categories</h1>
+                        <h1 className="font-bold text-2xl my-6">Categories</h1>
+                        <div className="flex w-full justify-end">
                             <div className="flex gap-x-5 justify-center items-center">
                                 <div className="flex px-2 py-4 rounded-xl bg-white space-x-2">
                                     <img src="/Search.png" alt="Search" />
@@ -221,8 +221,8 @@ export default function Categories() {
                             </div>
                         )}
                         <div className="overflow-x-auto">
-                        <table className="min-w-full border-separate border-spacing-y-3 text-xs">
-                        <thead>
+                            <table className="min-w-full border-separate border-spacing-y-3 text-xs">
+                                <thead>
                                     <tr className="text-gray-500 font-semibold text-left">
                                         <th className="py-2 px-3 text-center">Image</th>
                                         <th className="py-2 px-3 text-center">Name</th>
@@ -235,7 +235,7 @@ export default function Categories() {
                                     </tr>
                                 </thead>
                                 <tbody className=" bg-white border border-gray-200">
-                                {filteredCategories.map((category) => (
+                                    {filteredCategories.map((category) => (
                                         <tr key={category.id} className="border-t hover:bg-gray-100">
                                             <td className="py-2 px-3 flex justify-center items-center">
                                                 <img
