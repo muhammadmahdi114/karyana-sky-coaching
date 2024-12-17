@@ -165,28 +165,28 @@ export default function ProvidersType() {
           </div>
         )} */}
                 <div className="overflow-x-auto">
-                    <table className="min-w-full text-xs">
+                    <table className="min-w-full border-separate border-spacing-y-3 text-xs">
                         <thead>
                             <tr className="text-gray-500 font-semibold text-left">
-                                <th className="py-4 px-6">Name</th>
-                                <th className="py-4 px-6">Commission</th>
-                                <th className="py-4 px-6">Disabled</th>
-                                <th className="py-4 px-6">Updated At</th>
-                                <th className="py-4 px-6"></th>
+                                <th className="py-2 px-3">Name</th>
+                                <th className="py-2 px-3">Commission</th>
+                                <th className="py-2 px-3">Disabled</th>
+                                <th className="py-2 px-3">Updated At</th>
+                                <th className="py-2 px-3"></th>
                             </tr>
                         </thead>
                         <tbody className=" bg-white border border-gray-200">
                             {filteredProviderTypes.map((type) => (
                                 <tr key={type._id} className="border-t hover:bg-gray-100">
-                                    <td className="py-4 px-6">{type.name}</td>
-                                    <td className="py-4 px-6">{type.commission}</td>
-                                    <td className="py-4 px-6">
+                                    <td className="py-2 px-3">{type.name}</td>
+                                    <td className="py-2 px-3">{type.commission}</td>
+                                    <td className="py-2 px-3">
                                         <span className={`px-2 py-1 rounded ${type.disabled ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}>
                                             {type.disabled ? 'Yes' : 'No'}
                                         </span>
                                     </td>
-                                    <td className="py-4 px-6">{formatDate(type.updatedAt)}</td>
-                                    <td className="py-4 px-6 text-right">
+                                    <td className="py-2 px-3">{formatDate(type.updatedAt)}</td>
+                                    <td className="py-2 px-3 text-right">
                                         <button className="focus:outline-none" onClick={() => toggleMenu(type._id)}>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"

@@ -11,6 +11,10 @@ export default function BookingsReq() {
     const [selectedCustomer, setSelectedCustomer] = useState('');
     const [selectedProvider, setSelectedProvider] = useState('');
     const [scheduleDate, setScheduleDate] = useState('');
+    const [bookingDate, setBookingDate] = useState('');
+    const [customerName, setCustomerName] = useState('');
+    const [providerName, setProviderName] = useState('');
+    const [filteredBookingList, setFilteredBookingList] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -18,6 +22,7 @@ export default function BookingsReq() {
             try {
                 const response = await axios.get(`https://karyana-backend.vercel.app/get-bookings-req`);
                 setBookingList(response.data);
+                setFilteredBookingList(response.data); // Initially show all bookings
             } catch (error) {
                 console.error('Error fetching bookings:', error);
             }
@@ -29,8 +34,6 @@ export default function BookingsReq() {
                 const providersResponse = await axios.get(`https://karyana-backend.vercel.app/get-providers`);
                 setCustomers(usersResponse.data);
                 setProviders(providersResponse.data);
-                console.log("User: ", usersResponse.data);
-                console.log("Provider: ", providersResponse.data);
             } catch (error) {
                 console.error('Error fetching customers or providers:', error);
             }
@@ -74,6 +77,49 @@ export default function BookingsReq() {
         navigate(`/booking-details/${bookingId}`);
     };
 
+    // Handle search filter logic
+    const handleSearch = () => {
+        let filteredBookings = bookingList;
+
+        if (bookingDate) {
+            filteredBookings = filteredBookings.filter((booking) =>
+                formatDate(booking.bookingDate) === formatDate(bookingDate)
+            );
+        }
+
+        if (scheduleDate) {
+            filteredBookings = filteredBookings.filter((booking) =>
+                formatDate(booking.scheduleDate) === formatDate(scheduleDate)
+            );
+        }
+
+        if (selectedCustomer) {
+            filteredBookings = filteredBookings.filter((booking) =>
+                booking.customerId && booking.customerId._id === selectedCustomer
+            );
+        }
+
+        if (selectedProvider) {
+            filteredBookings = filteredBookings.filter((booking) =>
+                booking.providerId && booking.providerId._id === selectedProvider
+            );
+        }
+
+        if (customerName) {
+            filteredBookings = filteredBookings.filter((booking) =>
+                booking.customerId && booking.customerId.name.toLowerCase().includes(customerName.toLowerCase())
+            );
+        }
+
+        if (providerName) {
+            filteredBookings = filteredBookings.filter((booking) =>
+                booking.providerId && booking.providerId.name.toLowerCase().includes(providerName.toLowerCase())
+            );
+        }
+
+        setFilteredBookingList(filteredBookings);
+    };
+
     return (
         <>
             <NavBar />
@@ -81,13 +127,10 @@ export default function BookingsReq() {
             <div className="min-h-screen ml-60 bg-gray-100 px-8 py-5">
                 <div className="mt-4">
                     <div>
-                        <div className="flex w-full justify-between">
+                        <div className="flex w-full justify-between items-center">
                             <h1 className="font-bold text-2xl my-6">Bookings</h1>
-                            <button
-                                onClick={() => document.getElementById("addBookingForm").classList.toggle("hidden")}
-                                className="bg-blue-500 text-white px-6 py-2 rounded-md"
-                            >
-                                Add Booking Request
+                            <button onClick={() => document.getElementById("addBookingForm").classList.toggle("hidden")} className="bg-[#89b8ff] h-9 rounded-xl flex items-center px-5 py-4 text-primary font-bold">
+                                <span className="text-2xl mb-1 mr-2">+</span>Add Booking Request
                             </button>
                         </div>
 
@@ -144,23 +187,65 @@ export default function BookingsReq() {
                             </div>
                         </div>
 
+                        {/* Search Filters */}
+                        <div className="mt-8">
+                            <h2 className="font-semibold mb-2">Search Bookings</h2>
+                            <div className="flex gap-4">
+                                <input
+                                    type="date"
+                                    value={bookingDate}
+                                    onChange={(e) => setBookingDate(e.target.value)}
+                                    className="w-full px-4 py-2 border rounded-md"
+                                    placeholder="Search by Booking Date"
+                                />
+                                <input
+                                    type="date"
+                                    value={scheduleDate}
+                                    onChange={(e) => setScheduleDate(e.target.value)}
+                                    className="w-full px-4 py-2 border rounded-md"
+                                    placeholder="Search by Schedule Date"
+                                />
+                                <input
+                                    type="text"
+                                    value={customerName}
+                                    onChange={(e) => setCustomerName(e.target.value)}
+                                    className="w-full px-4 py-2 border rounded-md"
+                                    placeholder="Search by Customer Name"
+                                />
+                                <input
+                                    type="text"
+                                    value={providerName}
+                                    onChange={(e) => setProviderName(e.target.value)}
+                                    className="w-full px-4 py-2 border rounded-md"
+                                    placeholder="Search by Provider Name"
+                                />
+                                <button
+                                    onClick={handleSearch}
+                                    className="bg-blue-500 text-white px-6 py-2 rounded-md"
+                                >
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Bookings Table */}
                         <div className="overflow-x-auto mt-8">
-                            <table className="min-w-full text-xs">
+                            <table className="min-w-full border-separate border-spacing-y-3 text-xs">
                                 <thead>
                                     <tr className="text-gray-500 font-semibold text-left">
-                                        <th className="py-4 px-6 text-center">Booking ID</th>
-                                        <th className="py-4 px-6 text-center">Booking Date</th>
-                                        <th className="py-4 px-6 text-center">Schedule Date</th>
-                                        <th className="py-4 px-6 text-center">Customer Info</th>
-                                        <th className="py-4 px-6 text-center">Provider Info</th>
-                                        <th className="py-4 px-6 text-center">Total Amount</th>
-                                        <th className="py-4 px-6 text-center">Payment Status</th>
-                                        <th className="py-4 px-6 text-center">Updated At</th>
-                                        <th className="py-4 px-6 text-center"></th>
+                                        <th className="py-2 px-3 text-center">Booking ID</th>
+                                        <th className="py-2 px-3 text-center">Booking Date</th>
+                                        <th className="py-2 px-3 text-center">Schedule Date</th>
+                                        <th className="py-2 px-3 text-center">Customer Info</th>
+                                        <th className="py-2 px-3 text-center">Provider Info</th>
+                                        <th className="py-2 px-3 text-center">Total Amount</th>
+                                        <th className="py-2 px-3 text-center">Payment Status</th>
+                                        <th className="py-2 px-3 text-center">Updated At</th>
+                                        <th className="py-2 px-3 text-center"></th>
                                     </tr>
                                 </thead>
                                 <tbody className=" bg-white border border-gray-200">
-                                    {bookingList.map((booking) => (
+                                    {filteredBookingList.map((booking) => (
                                         <tr key={booking.bookingId} className="border-t hover:bg-gray-100">
                                             <td className="font-medium text-center">{booking.bookingId}</td>
                                             <td className="font-medium text-center">{formatDate(booking.bookingDate)}</td>
@@ -185,12 +270,12 @@ export default function BookingsReq() {
                                                         viewBox="0 0 24 24"
                                                         strokeWidth="1.5"
                                                         stroke="currentColor"
-                                                        className="w-6 h-6 text-gray-700 border-2 rounded-lg hover:bg-gray-300"
+                                                        className="w-6 h-6"
                                                     >
                                                         <path
                                                             strokeLinecap="round"
                                                             strokeLinejoin="round"
-                                                            d="M12 6.75v.008m0 10.492V17.25M4.5 12a7.5 7.5 0 1115 0 7.5 7.5 0 01-15 0z"
+                                                            d="M15.232 7.232a3 3 0 014.24 4.24M17.25 3.75l3.5 3.5M11.25 5.25L4.5 12m0 0l6.75 6.75m-6.75-6.75h12"
                                                         />
                                                     </svg>
                                                 </button>

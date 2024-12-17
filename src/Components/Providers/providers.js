@@ -5,6 +5,9 @@ import axios from "axios";
 
 export default function Providers() {
     const [search, setSearch] = useState("");
+    const [selectedProviderType, setSelectedProviderType] = useState("");
+    const [address, setAddress] = useState("");
+    const [range, setRange] = useState("");
     const [providerTypes, setProviderTypes] = useState([]);
     const [providerList, setProviderList] = useState([]);
     const [addServiceProvider, setAddServiceProvider] = useState(false);
@@ -85,8 +88,22 @@ export default function Providers() {
     };
 
     const filteredServiceProviders = providerList.filter((provider) => {
-        const matchesName = provider.name.toLowerCase().includes(search.toLowerCase());
-        return matchesName;
+        const matchesName = provider.name?.toLowerCase().includes(search.toLowerCase());
+        const matchesProviderType = selectedProviderType
+            ? provider.providerType === selectedProviderType
+            : true;
+        const matchesAddress = address
+            ? String(provider.addresses || "")
+                .toLowerCase()
+                .includes(address.toLowerCase())
+            : true;
+        const matchesRange = range
+            ? String(provider.availableRange || "")
+                .toLowerCase()
+                .includes(range.toLowerCase())
+            : true;
+
+        return matchesName && matchesProviderType && matchesAddress && matchesRange;
     });
 
     const handleProviderImageUpload = (e) => {
@@ -115,41 +132,83 @@ export default function Providers() {
                     <div>
                         <div className="flex w-full justify-between">
                             <h1 className="font-bold text-xl my-6">Service Providers</h1>
-                            <div className="flex gap-x-5 text-sm justify-center items-center">
-                                <div className="flex px-1 py-3 rounded-xl bg-white space-x-3">
+                            <div className="flex gap-x-5 text-sm justify-center items-center flex-wrap">
+
+                                <div className="flex px-1 py-1.5 rounded-xl bg-white space-x-3">
                                     <img src="/Search.png" alt="Search" className="ml-2" />
                                     <input
                                         type="text"
                                         placeholder="Search by Name"
                                         value={search}
                                         onChange={(e) => setSearch(e.target.value)}
+                                        className="outline-none"
                                     />
                                 </div>
-                                <button onClick={() => { setAddServiceProvider(true) }} className="bg-[#89b8ff] h-12 rounded-xl flex items-center px-3 text-primary font-bold">
+
+                                <div className="flex pl-3 pr-1 py-2.5 rounded-xl bg-white space-x-3">
+                                    <select
+                                        className="outline-none bg-transparent"
+                                        value={selectedProviderType}
+                                        onChange={(e) => setSelectedProviderType(e.target.value)}
+                                    >
+                                        <option value="">All Provider Types</option>
+                                        {providerTypes.map((type) => (
+                                            <option key={type._id} value={type.name}>
+                                                {type.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="flex pl-3 py-2 rounded-xl bg-white space-x-3">
+                                    <input
+                                        type="text"
+                                        placeholder="Search by Address"
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
+                                        className="outline-none"
+                                    />
+                                </div>
+
+                                <div className="flex pl-3 py-2 rounded-xl bg-white space-x-3">
+                                    <input
+                                        type="text"
+                                        placeholder="Search by Available Range"
+                                        value={range}
+                                        onChange={(e) => setRange(e.target.value)}
+                                        className="outline-none"
+                                    />
+                                </div>
+
+                                <button
+                                    onClick={() => setAddServiceProvider(true)}
+                                    className="bg-[#89b8ff] rounded-xl flex items-center px-3 text-primary font-bold"
+                                >
                                     <span className="text-2xl mb-1 mr-2">+</span> Add Service Provider
                                 </button>
                             </div>
+
                         </div>
                         <div className="overflow-x-auto">
-                            <table className="min-w-full text-xs">
+                            <table className="min-w-full border-separate border-spacing-y-3 text-xs">
                                 <thead>
-                                    <tr className="text-gray-500 font-semibold text-left">
-                                        <th className="py-4 pr-6">Profile</th>
-                                        <th className="py-4 px-6">Provider Type</th>
-                                        <th className="py-4 px-6">Phone No</th>
-                                        <th className="py-4 px-6">Addresses</th>
-                                        <th className="py-4 px-6">Available Range</th>
-                                        <th className="py-4 px-6">Taxes</th>
-                                        <th className="py-4 px-6">Available</th>
-                                        <th className="py-4 px-6">Accepted</th>
-                                        <th className="py-4 px-6">Updated At</th>
-                                        <th className="py-4 px-6"></th>
+                                    <tr className="text-gray-500 font-semibold text-left ">
+                                        <th className="py-2 pr-3">Profile</th>
+                                        <th className="py-2 px-3">Provider Type</th>
+                                        <th className="py-2 px-3">Phone No</th>
+                                        <th className="py-2 px-3">Addresses</th>
+                                        <th className="py-2 px-3">Available Range</th>
+                                        <th className="py-2 px-3">Taxes</th>
+                                        <th className="py-2 px-3">Available</th>
+                                        <th className="py-2 px-3">Accepted</th>
+                                        <th className="py-2 px-3">Updated At</th>
+                                        <th className="py-2 px-3"></th>
                                     </tr>
                                 </thead>
                                 <tbody className="border border-gray-200">
                                     {filteredServiceProviders.map((provider) => (
                                         <tr key={provider.id} className="border-t bg-white hover:bg-gray-100 rounded-lg">
-                                            <td className="py-4 pr-6">
+                                            <td className="pl-2">
                                                 <div className="flex gap-x-3 items-center">
                                                     <img src={provider.image} alt={provider.name} className="w-12 h-12" />
                                                     <div className="space-y-1">
@@ -162,11 +221,11 @@ export default function Providers() {
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="py-4 px-6">{provider.providerType}</td>
-                                            <td className="py-4 px-6">{provider.phNumber}</td>
-                                            <td className="py-4 px-6">{provider.addresses}</td>
-                                            <td className="py-4 px-6">{provider.availableRange}</td>
-                                            <td className="py-4 px-6">{provider.taxes}</td>
+                                            <td className="py-2 px-3">{provider.providerType}</td>
+                                            <td className="py-2 px-3">{provider.phNumber}</td>
+                                            <td className="py-2 px-3">{provider.addresses}</td>
+                                            <td className="py-2 px-3">{provider.availableRange}</td>
+                                            <td className="py-2 px-3">{provider.taxes}</td>
                                             <td className="text-center">
                                                 <span className={`px-2 py-1 rounded ${provider.availability ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
                                                     {provider.availability ? 'Yes' : 'No'}
@@ -177,8 +236,8 @@ export default function Providers() {
                                                     {provider.accepted ? 'Yes' : 'No'}
                                                 </span>
                                             </td>
-                                            <td className="py-4 px-6">{formatDate(provider.updatedAt)}</td>
-                                            <td className="py-4 px-6 text-right">
+                                            <td className="py-2 px-3">{formatDate(provider.updatedAt)}</td>
+                                            <td className="py-2 px-3 text-right">
                                                 <button className="focus:outline-none">
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"

@@ -221,23 +221,23 @@ export default function Categories() {
                             </div>
                         )}
                         <div className="overflow-x-auto">
-                        <table className="min-w-full text-xs">
+                        <table className="min-w-full border-separate border-spacing-y-3 text-xs">
                         <thead>
                                     <tr className="text-gray-500 font-semibold text-left">
-                                        <th className="py-4 px-6 text-center">Image</th>
-                                        <th className="py-4 px-6 text-center">Name</th>
-                                        <th className="py-4 px-6 text-center">Color</th>
-                                        <th className="py-4 px-6 text-center">Description</th>
-                                        <th className="py-4 px-6 text-center">Featured</th>
-                                        <th className="py-4 px-6 text-center">Order</th>
-                                        <th className="py-4 px-6 text-center">Updated At</th>
-                                        <th className="py-4 px-6 text-center"></th>
+                                        <th className="py-2 px-3 text-center">Image</th>
+                                        <th className="py-2 px-3 text-center">Name</th>
+                                        <th className="py-2 px-3 text-center">Color</th>
+                                        <th className="py-2 px-3 text-center">Description</th>
+                                        <th className="py-2 px-3 text-center">Featured</th>
+                                        <th className="py-2 px-3 text-center">Order</th>
+                                        <th className="py-2 px-3 text-center">Updated At</th>
+                                        <th className="py-2 px-3 text-center"></th>
                                     </tr>
                                 </thead>
                                 <tbody className=" bg-white border border-gray-200">
                                 {filteredCategories.map((category) => (
                                         <tr key={category.id} className="border-t hover:bg-gray-100">
-                                            <td className="py-4 px-6 flex justify-center items-center">
+                                            <td className="py-2 px-3 flex justify-center items-center">
                                                 <img
                                                     src={category.image}
                                                     alt={category.name}
@@ -251,15 +251,15 @@ export default function Categories() {
                                             >
                                                 {category.color}
                                             </td>
-                                            <td className="py-4 px-6 text-center">{category.description}</td>
+                                            <td className="py-2 px-3 text-center">{category.description}</td>
                                             <td className="text-center">
                                                 <span className={`px-2 py-1 rounded ${category.featured ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
                                                     {category.featured ? 'Yes' : 'No'}
                                                 </span>
                                             </td>
                                             <td className="font-medium text-center">{category.order}</td>
-                                            <td className="py-4 px-6 text-center">{formatDate(category.updatedAt)}</td>
-                                            <td className="py-4 px-6 text-right relative">
+                                            <td className="py-2 px-3 text-center">{formatDate(category.updatedAt)}</td>
+                                            <td className="py-2 px-3 text-right relative">
                                                 <button
                                                     className="focus:outline-none"
                                                     onClick={() => toggleMenu(category.id)}

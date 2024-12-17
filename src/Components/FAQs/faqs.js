@@ -137,14 +137,14 @@ export default function FAQs() {
                         </div>
                     )}
                     <div className="overflow-x-auto">
-                        <table className="min-w-full text-xs">
+                        <table className="min-w-full border-separate border-spacing-y-3 text-xs">
                             <thead>
                                 <tr className="text-gray-500 font-semibold">
-                                    <th className="py-4 px-6 text-start">Question</th>
-                                    <th className="py-4 px-6 text-start">Answer</th>
-                                    <th className="py-4 px-6 text-center">FAQ Category</th>
-                                    <th className="py-4 px-6 text-center">Updated At</th>
-                                    <th className="py-4 px-6 text-center"></th>
+                                    <th className="py-2 px-3 text-start">Question</th>
+                                    <th className="py-2 px-3 text-start">Answer</th>
+                                    <th className="py-2 px-3 text-center">FAQ Category</th>
+                                    <th className="py-2 px-3 text-center">Updated At</th>
+                                    <th className="py-2 px-3 text-center"></th>
                                 </tr>
                             </thead>
                             <tbody className=" bg-white border border-gray-200">
@@ -152,9 +152,9 @@ export default function FAQs() {
                                     <tr key={faq.id} className="border-t hover:bg-gray-100">
                                         <td className="pl-4 font-medium text-start">{faq.question}</td>
                                         <td className="font-medium text-start">{faq.answer}</td>
-                                        <td className="py-4 px-6 text-center">{faq.faq_category}</td>
-                                        <td className="py-4 px-6 text-center">{formatDate(faq.updatedAt)}</td>
-                                        <td className="py-4 px-6 text-right relative">
+                                        <td className="py-2 px-3 text-center">{faq.faq_category}</td>
+                                        <td className="py-2 px-3 text-center">{formatDate(faq.updatedAt)}</td>
+                                        <td className="py-2 px-3 text-right relative">
                                             <button
                                                 className="focus:outline-none"
                                                 onClick={() => toggleMenu(faq.id)}

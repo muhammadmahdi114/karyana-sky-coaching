@@ -268,24 +268,24 @@ export default function ServiceList() {
                             </div>
                         )}
                         <div className="overflow-x-auto">
-                            <table className="min-w-full text-xs">
+                            <table className="min-w-full border-separate border-spacing-y-3 text-xs">
                                 <thead>
                                     <tr className="text-gray-500 font-semibold text-left">
-                                        <th className="py-4 px-6 text-center">Image</th>
-                                        <th className="py-4 px-6 text-center">Name</th>
-                                        <th className="py-4 px-6 text-center">Provider</th>
-                                        <th className="py-4 px-6 text-center">Price</th>
-                                        <th className="py-4 px-6 text-center">Discounted Price</th>
-                                        <th className="py-4 px-6 text-center">Categories</th>
-                                        <th className="py-4 px-6 text-center">Available</th>
-                                        <th className="py-4 px-6 text-center">Updated At</th>
-                                        <th className="py-4 px-6 text-center"></th>
+                                        <th className="py-2 px-3 text-center">Image</th>
+                                        <th className="py-2 px-3 text-center">Name</th>
+                                        <th className="py-2 px-3 text-center">Provider</th>
+                                        <th className="py-2 px-3 text-center">Price</th>
+                                        <th className="py-2 px-3 text-center">Discounted Price</th>
+                                        <th className="py-2 px-3 text-center">Categories</th>
+                                        <th className="py-2 px-3 text-center">Available</th>
+                                        <th className="py-2 px-3 text-center">Updated At</th>
+                                        <th className="py-2 px-3 text-center"></th>
                                     </tr>
                                 </thead>
                                 <tbody className=" bg-white border border-gray-200">
                                     {filteredServices.map((service) => (
                                         <tr key={service.id} className="border-t hover:bg-gray-100">
-                                            <td className="py-4 px-6 flex justify-center items-center">
+                                            <td className="py-2 px-3 flex justify-center items-center">
                                                 <img
                                                     src={service.image}
                                                     alt={service.name}
@@ -294,16 +294,16 @@ export default function ServiceList() {
                                             </td>
                                             <td className="font-medium text-center">{service.name}</td>
                                             <td className="font-medium text-center">{service.provider}</td>
-                                            <td className="py-4 px-6 text-center">{service.price}</td>
+                                            <td className="py-2 px-3 text-center">{service.price}</td>
                                             <td className="font-medium text-center">{service.discPrice}</td>
-                                            <td className="py-4 px-6 text-center">{service.categories}</td>
+                                            <td className="py-2 px-3 text-center">{service.categories}</td>
                                             <td className="text-center">
                                                 <span className={`px-2 py-1 rounded ${service.available ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
                                                     {service.available ? 'Yes' : 'No'}
                                                 </span>
                                             </td>
-                                            <td className="py-4 px-6 text-center">{formatDate(service.updatedAt)}</td>
-                                            <td className="py-4 px-6 text-right relative">
+                                            <td className="py-2 px-3 text-center">{formatDate(service.updatedAt)}</td>
+                                            <td className="py-2 px-3 text-right relative">
                                                 <button
                                                     className="focus:outline-none"
                                                     onClick={() => toggleMenu(service.id)}

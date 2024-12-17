@@ -184,16 +184,16 @@ export default function Coupons() {
                             </div>
                         )}
                         <div className="overflow-x-auto">
-                            <table className="min-w-full text-xs">
+                            <table className="min-w-full border-separate border-spacing-y-3 text-xs">
                                 <thead>
                                     <tr className="text-gray-500 font-semibold text-left">
-                                        <th className="py-4 px-6 text-center">Code</th>
-                                        <th className="py-4 px-6 text-center">Discount</th>
-                                        <th className="py-4 px-6 text-center">Description</th>
-                                        <th className="py-4 px-6 text-center">Expires At</th>
-                                        <th className="py-4 px-6 text-center">Enabled</th>
-                                        <th className="py-4 px-6 text-center">Updated At</th>
-                                        <th className="py-4 px-6 text-center"></th>
+                                        <th className="py-2 px-3 text-center">Code</th>
+                                        <th className="py-2 px-3 text-center">Discount</th>
+                                        <th className="py-2 px-3 text-center">Description</th>
+                                        <th className="py-2 px-3 text-center">Expires At</th>
+                                        <th className="py-2 px-3 text-center">Enabled</th>
+                                        <th className="py-2 px-3 text-center">Updated At</th>
+                                        <th className="py-2 px-3 text-center"></th>
                                     </tr>
                                 </thead>
                                 <tbody className=" bg-white border border-gray-200">
@@ -201,15 +201,15 @@ export default function Coupons() {
                                         <tr key={coupon.id} className="border-t hover:bg-gray-100">
                                             <td className="font-medium text-center">{coupon.code}</td>
                                             <td className="font-medium text-center">{coupon.discount}</td>
-                                            <td className="py-4 px-6 text-center">{coupon.description}</td>
+                                            <td className="py-2 px-3 text-center">{coupon.description}</td>
                                             <td className="font-medium text-center">{formatDate(coupon.expires_at)}</td>
                                             <td className="text-center">
                                                 <span className={`px-2 py-1 rounded ${coupon.enabled ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
                                                     {coupon.enabled ? 'Yes' : 'No'}
                                                 </span>
                                             </td>
-                                            <td className="py-4 px-6 text-center">{formatDate(coupon.updatedAt)}</td>
-                                            <td className="py-4 px-6 text-right relative">
+                                            <td className="py-2 px-3 text-center">{formatDate(coupon.updatedAt)}</td>
+                                            <td className="py-2 px-3 text-right relative">
                                                 <button
                                                     className="focus:outline-none"
                                                     onClick={() => toggleMenu(coupon.id)}

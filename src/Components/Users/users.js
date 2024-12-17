@@ -105,7 +105,7 @@ export default function Users() {
                 <div className="flex w-full justify-between">
                     <h1 className="font-bold text-2xl my-6">Users</h1>
                     <div className="flex gap-x-5 justify-center items-center">
-                        <div className="flex px-2 py-4 rounded-xl bg-white space-x-2">
+                        <div className="flex px-1 py-1.5 rounded-xl bg-white space-x-2">
                             <img src="/Search.png" alt="Search" />
                             <input
                                 type="text"
@@ -114,40 +114,40 @@ export default function Users() {
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
-                        <select value={searchCity} onChange={(e) => setSearchCity(e.target.value)} className="rounded-xl w-20 px-2 py-4 bg-white">
-                            <option value="City" disabled>City</option>
+                        <select value={searchCity} onChange={(e) => setSearchCity(e.target.value)} className="rounded-xl w-20 pl-3 pr-1 py-2 bg-white">
+                            <option value="City" disabled>Type</option>
                             <option value="all">All</option>
                             <option value="karyana">Karyana</option>
                             <option value="grocery">Grocery</option>
                             <option value="bakery">Bakery</option>
                         </select>
-                        <select value={searchStatus} onChange={(e) => setSearchStatus(e.target.value)} className="rounded-xl px-2 py-4 bg-white">
+                        <select value={searchStatus} onChange={(e) => setSearchStatus(e.target.value)} className="rounded-xl pl-3 pr-1 py-2 bg-white">
                             <option value="Status" disabled>Status</option>
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
                         </select>
-                        <button onClick={() => { setAddUser(true) }} className="bg-[#89b8ff] h-12 rounded-xl flex items-center px-5 py-4 text-primary font-bold">
+                        <button onClick={() => { setAddUser(true) }} className="bg-[#89b8ff] h-9 rounded-xl flex items-center px-5 py-4 text-primary font-bold">
                             <span className="text-2xl mb-1 mr-2">+</span> Add User
                         </button>
                     </div>
                 </div>
                 <div className="overflow-x-auto">
-                    <table className="min-w-full text-xs">
+                    <table className="min-w-full border-separate border-spacing-y-3 text-xs">
                         <thead>
                             <tr className="text-gray-500 font-semibold text-left">
-                                <th className="py-4 px-6">Name</th>
-                                <th className="py-4 px-6">Type</th>
-                                <th className="py-4 px-6">Phone No</th>
-                                <th className="py-4 px-6">Availability Range</th>
-                                <th className="py-4 px-6">Available</th>
-                                <th className="py-4 px-6">Accept</th>
-                                <th className="py-4 px-6"></th>
+                                <th className="py-2 px-3">Name</th>
+                                <th className="py-2 px-3">Type</th>
+                                <th className="py-2 px-3">Phone No</th>
+                                <th className="py-2 px-3">Availability Range</th>
+                                <th className="py-2 px-3">Available</th>
+                                <th className="py-2 px-3">Accept</th>
+                                <th className="py-2 px-3"></th>
                             </tr>
                         </thead>
                         <tbody className=" bg-white border border-gray-200">
                             {filteredUsers.map((user) => (
                                 <tr key={user.id} className="border-t hover:bg-gray-100">
-                                    <td className="py-4 px-6 flex items-center">
+                                    <td className="py-2 px-3 flex items-center">
                                         <img
                                             src={user.image}
                                             alt={user.name}
@@ -158,9 +158,9 @@ export default function Users() {
                                             <p className="text-sm text-gray-500">{user.email}</p>
                                         </div>
                                     </td>
-                                    <td className="py-4 px-6">{user.type}</td>
-                                    <td className="py-4 px-6">{user.phNumber}</td>
-                                    <td className="py-4 px-6">{user.availableRange}</td>
+                                    <td className="py-2 px-3">{user.type}</td>
+                                    <td className="py-2 px-3">{user.phNumber}</td>
+                                    <td className="py-2 px-3">{user.availableRange}</td>
                                     <td className="text-center">
                                         <span className={`px-2 py-1 rounded ${user.availability ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
                                             {user.availability ? 'Yes' : 'No'}
@@ -171,7 +171,7 @@ export default function Users() {
                                             {user.accept ? 'Yes' : 'No'}
                                         </span>
                                     </td>
-                                    <td className="py-4 px-6 text-right">
+                                    <td className="py-2 px-3 text-right">
                                         <button className="focus:outline-none">
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
